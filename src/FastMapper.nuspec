@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>SqlBuilder</id>
+    <version>0.1.0</version>
+    <title>SqlBuilder - query builder</title>
+    <authors>Phil Cooper</authors>
+    <owners>Phil Cooper</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A collection of classes for building Sql queries.</description>
+    <copyright>Copyright restlessmedia 2019</copyright>
+    <tags></tags>
+  </metadata>
+</package>
