@@ -47,6 +47,7 @@
     <Compile Include="Clause.cs" />
     <Compile Include="ClauseCollection.cs" />
     <Compile Include="Column.cs" />
+    <Compile Include="DataModel.cs" />
     <Compile Include="Delete.cs" />
     <Compile Include="DML.cs" />
     <Compile Include="Extensions\ExpressionExtensions.cs" />
@@ -54,10 +55,14 @@
     <Compile Include="GroupBy.cs" />
     <Compile Include="IClauseCollection.cs" />
     <Compile Include="IClauseCollectionExtensions.cs" />
+    <Compile Include="IModelFactory.cs" />
     <Compile Include="Insert.cs" />
     <Compile Include="ISqlText.cs" />
     <Compile Include="IWhere.cs" />
+    <Compile Include="Key.cs" />
+    <Compile Include="ModelColumn.cs" />
     <Compile Include="ModelDefinition.cs" />
+    <Compile Include="ModelFactory.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="OrderBy.cs" />
     <Compile Include="Paging.cs" />
