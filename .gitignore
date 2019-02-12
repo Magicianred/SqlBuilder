@@ -1,0 +1,10 @@
+src/bin/**/*
+src/obj/**/*
+SqlBuilder.UnitTest/bin/**/*
+SqlBuilder.UnitTest/obj/**/*
+SqlBuilder.Benchmark/bin/**/*
+SqlBuilder.Benchmark/obj/**/*
+.vs/**/*
+packages/**/*
+.DS_Store
+Nuget.Config

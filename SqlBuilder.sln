@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlBuilder", "src\SqlBuilder.csproj", "{DE1A912A-F067-45A6-B099-447AB83B397D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlBuilder.UnitTest", "SqlBuilder.UnitTest\SqlBuilder.UnitTest.csproj", "{82CD69C1-AE6D-4260-9498-351FBEB938CA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE1A912A-F067-45A6-B099-447AB83B397D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE1A912A-F067-45A6-B099-447AB83B397D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE1A912A-F067-45A6-B099-447AB83B397D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE1A912A-F067-45A6-B099-447AB83B397D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82CD69C1-AE6D-4260-9498-351FBEB938CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82CD69C1-AE6D-4260-9498-351FBEB938CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82CD69C1-AE6D-4260-9498-351FBEB938CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82CD69C1-AE6D-4260-9498-351FBEB938CA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {70189234-0987-493C-9EEC-EA55CC474CC0}
+	EndGlobalSection
+EndGlobal
