@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace System.Reflection
+﻿namespace System.Reflection
 {
   internal static class ReflectionExtensions
   {
@@ -33,14 +30,25 @@ namespace System.Reflection
     /// <returns></returns>
     public static object GetMemberValue(this MemberInfo member, object target)
     {
+      if (target == null)
+      {
+        return null;
+      }
+
       switch (member.MemberType)
       {
         case MemberTypes.Field:
-          return ((FieldInfo)member).GetValue(target);
+          {
+            return ((FieldInfo)member).GetValue(target);
+          }
         case MemberTypes.Property:
-          return ((PropertyInfo)member).GetValue(target);
+          {
+            return ((PropertyInfo)member).GetValue(target);
+          }
         default:
-          throw new ArgumentException("MemberInfo must be of type FieldInfo or PropertyInfo", "member");
+          {
+            throw new ArgumentException("MemberInfo must be of type FieldInfo or PropertyInfo", nameof(member));
+          }
       }
     }
 
@@ -52,16 +60,27 @@ namespace System.Reflection
     /// <param name="value"></param>
     public static void SetMemberValue(this MemberInfo member, object target, object value)
     {
+      if (target == null)
+      {
+        return;
+      }
+
       switch (member.MemberType)
       {
         case MemberTypes.Field:
-          ((FieldInfo)member).SetValue(target, value);
+          {
+            ((FieldInfo)member).SetValue(target, value);
+          }
           break;
         case MemberTypes.Property:
-          ((PropertyInfo)member).SetValue(target, value, null);
+          {
+            ((PropertyInfo)member).SetValue(target, value, null);
+          }
           break;
         default:
-          throw new ArgumentException("MemberInfo must be of type FieldInfo or PropertyInfo", "member");
+          {
+            throw new ArgumentException("MemberInfo must be of type FieldInfo or PropertyInfo", nameof(member));
+          }
       }
     }
   }

@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="AssertExtensions.cs" />
     <Compile Include="DeleteTests.cs" />
+    <Compile Include="Extensions\ReflectionExtensionsTests.cs" />
     <Compile Include="GroupByTests.cs" />
     <Compile Include="InsertTests.cs" />
     <Compile Include="ModelDefinitionTests.cs" />
