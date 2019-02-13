@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -104,8 +105,10 @@ namespace SqlBuilder
   {
     static ModelFactory()
     {
-      Cache = new Dictionary<Key, IEnumerable<ModelColumn>>();
+      Cache = new ConcurrentDictionary<Key, IEnumerable<ModelColumn>>();
     }
+
+    protected ModelFactory() { }
 
     public static void RegisterTypes(params Assembly[] assemblies)
     {
@@ -163,10 +166,25 @@ namespace SqlBuilder
         throw new InvalidOperationException($"There is already a data model type registered in the model factory for {dataModelType.FullName}.");
       }
 
-      Cache.Add(key, columns);
+      Cache.TryAdd(key, columns);
     }
 
-    public static IEnumerable<ModelColumn> FindColumns(Type dataModelType)
+    public static void Clear()
+    {
+      Cache.Clear();
+    }
+
+    protected static IEnumerable<ModelColumn> GetColumns(Key key)
+    {
+      if (!Cache.ContainsKey(key))
+      {
+        throw new InvalidOperationException($"The type has not been registered.  Ensure you call {nameof(ModelFactory.RegisterType)} with the datamodel type.");
+      }
+
+      return Cache[key];
+    }
+
+    private static IEnumerable<ModelColumn> FindColumns(Type dataModelType)
     {
       return new List<ModelColumn>(dataModelType.GetPublicMembers().Select(x => new ModelColumn(x)));
     }
@@ -178,7 +196,7 @@ namespace SqlBuilder
     /// <param name="dataModelType"></param>
     /// <param name="customMappings"></param>
     /// <returns></returns>
-    public static IEnumerable<ModelColumn> FindColumns(Type viewModelType, Type dataModelType, Dictionary<string, string> customMappings = null)
+    private static IEnumerable<ModelColumn> FindColumns(Type viewModelType, Type dataModelType, Dictionary<string, string> customMappings = null)
     {
       List<ModelColumn> columns = new List<ModelColumn>();
 
@@ -195,24 +213,6 @@ namespace SqlBuilder
       return columns;
     }
 
-    public static IEnumerable<Key> CacheKeys
-    {
-      get
-      {
-        return Cache.Keys;
-      }
-    }
-
-    protected static IEnumerable<ModelColumn> GetColumns(Key key)
-    {
-      if (!Cache.ContainsKey(key))
-      {
-        throw new InvalidOperationException($"The type has not been registered.  Ensure you call {nameof(ModelFactory.RegisterType)} with the datamodel type.");
-      }
-
-      return Cache[key];
-    }
-
     private static MemberInfo FindDataModelMember(Type dataModelType, MemberInfo viewModelMember, Dictionary<string, string> customMappings = null)
     {
       string name = viewModelMember.Name;
@@ -225,6 +225,6 @@ namespace SqlBuilder
       return dataModelType.GetPublicMembers().FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase));
     }
 
-    protected static Dictionary<Key, IEnumerable<ModelColumn>> Cache;
+    protected static ConcurrentDictionary<Key, IEnumerable<ModelColumn>> Cache;
   }
 }

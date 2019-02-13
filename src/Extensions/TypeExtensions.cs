@@ -7,14 +7,6 @@ namespace System
 {
   internal static class TypeExtensions
   {
-    public static bool IsAssignableToGenericType(this Type type, Type genericType)
-    {
-      if (type == null || genericType == null)
-        return false;
-
-      return type == genericType || type.MapsToGenericTypeDefinition(genericType) || type.HasInterfaceThatMapsToGenericTypeDefinition(genericType) || type.BaseType.IsAssignableToGenericType(genericType);
-    }
-
     /// <summary>
     /// Returns the public instance properties and fields for the given type.
     /// </summary>
@@ -77,18 +69,10 @@ namespace System
             return ((PropertyInfo)member).PropertyType;
           }
         default:
-          throw new ArgumentException("MemberInfo must be of type FieldInfo or PropertyInfo", "member");
+          {
+            throw new ArgumentException("MemberInfo must be of type FieldInfo or PropertyInfo", "member");
+          }
       }
-    }
-
-    /// <summary>
-    /// If true, the type is nullable.
-    /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    public static bool IsNullable(this Type type)
-    {
-      return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
     }
 
     /// <summary>
@@ -123,16 +107,6 @@ namespace System
     public static IEnumerable<Type> GetTypesThatInherit(this Assembly assembly, Type type)
     {
       return assembly.GetTypes().Where(x => x.Inherits(type));
-    }
-
-    private static bool HasInterfaceThatMapsToGenericTypeDefinition(this Type givenType, Type genericType)
-    {
-      return givenType.GetInterfaces().Where(it => it.IsGenericType).Any(it => it.GetGenericTypeDefinition() == genericType);
-    }
-
-    private static bool MapsToGenericTypeDefinition(this Type givenType, Type genericType)
-    {
-      return genericType.IsGenericTypeDefinition && givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType;
     }
   }
 }

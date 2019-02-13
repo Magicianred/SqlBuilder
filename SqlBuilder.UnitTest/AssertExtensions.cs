@@ -82,5 +82,32 @@ namespace SqlBuilder.UnitTest
 
       exception.MustBeNull();
     }
+
+    public static void MustThrow<T>(this Action action)
+      where T : Exception
+    {
+      Exception exception = null;
+
+      try
+      {
+        action();
+      }
+      catch (T e)
+      {
+        exception = e;
+      }
+
+      exception.MustNotBeNull();
+    }
+
+    public static void MustThrow(this Action action)
+    {
+      MustThrow<Exception>(action);
+    }
+
+    public static void Matches<T>(this Type type)
+    {
+      MustBeTrue(typeof(T) == type);
+    }
   }
 }

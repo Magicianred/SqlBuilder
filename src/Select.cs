@@ -121,7 +121,7 @@ namespace SqlBuilder
     private Where<TDataModel> _where;
   }
 
-  public class Select : Statement
+  public class Select : SqlText
   {
     public Select(string columns = Wildcard, bool includeCount = false)
       : base()

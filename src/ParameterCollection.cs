@@ -7,7 +7,7 @@ namespace SqlBuilder
   {
     public ParameterCollection(Dictionary<string, object> parameters)
     {
-      _parameters = parameters;
+      _parameters = parameters ?? new Dictionary<string, object>(0);
     }
 
     public ParameterCollection(int capacity)
@@ -37,7 +37,7 @@ namespace SqlBuilder
     {
       foreach (KeyValuePair<string, object> parameter in parameters)
       {
-        _parameters.Add(parameter.Key, parameter.Value);
+        Add(parameter.Key, parameter.Value);
       }
     }
 
@@ -87,7 +87,9 @@ namespace SqlBuilder
     public static string GetName(string name)
     {
       if (!name.StartsWith(_prefix))
-        name = string.Concat(_prefix, name);
+      {
+        return string.Concat(_prefix, name);
+      }
 
       return name;
     }

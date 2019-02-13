@@ -91,7 +91,7 @@ namespace SqlBuilder.UnitTest.Extensions
       action.MustNotThrow();
     }
 
-    public class TestClass
+    private class TestClass
     {
       [Required(ErrorMessage = "FooBar")]
       public int Foo { get; set; }

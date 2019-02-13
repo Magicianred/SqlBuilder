@@ -25,7 +25,7 @@ namespace SqlBuilder
     protected readonly ModelDefinition Definition;
   }
 
-  public abstract class DML : Statement
+  public abstract class DML : SqlText
   {
     public DML(ParameterCollection parameters = null)
       : base(parameters) { }

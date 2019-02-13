@@ -59,12 +59,12 @@ namespace SqlBuilder
 
     public IEnumerable<Column> GetDatabaseColumns()
     {
-      return DatabaseColumns;
+      return _columns.Where(x => !x.GetMember().AttributeHas<DatabaseGeneratedAttribute>(attr => attr.DatabaseGeneratedOption == DatabaseGeneratedOption.None));
     }
 
     public IEnumerable<Column> GetEditableColumns()
     {
-      return EditableColumns;
+      return _columns.Where(x => x.IsEditable);
     }
 
     public readonly string OrderBy;
@@ -75,7 +75,7 @@ namespace SqlBuilder
 
     public IEnumerable<string> EditableColumnNames()
     {
-      return EditableColumns.Select(x => x.Name);
+      return GetEditableColumns().Select(x => x.Name);
     }
 
     public IEnumerable<Column> Columns
@@ -83,22 +83,6 @@ namespace SqlBuilder
       get
       {
         return _columns;
-      }
-    }
-
-    internal IEnumerable<Column> DatabaseColumns
-    {
-      get
-      {
-        return _columns.Where(x => !x.GetMember().AttributeHas<DatabaseGeneratedAttribute>(attr => attr.DatabaseGeneratedOption == DatabaseGeneratedOption.None));
-      }
-    }
-
-    internal IEnumerable<Column> EditableColumns
-    {
-      get
-      {
-        return _columns.Where(x => x.IsEditable);
       }
     }
 
