@@ -30,6 +30,34 @@ namespace SqlBuilder.UnitTest
       modelFactory.FindDataModelMember("Foo").MustEqual("Foo");
     }
 
+    [TestMethod]
+    public void CreateViewModel_creates_object_from_data_model()
+    {
+      ModelFactory.RegisterType<TestMappedDataModel>();
+
+      ModelFactory<TestMappedDataModel, TestViewModel> modelFactory = new ModelFactory<TestMappedDataModel, TestViewModel>();
+      TestMappedDataModel dataModel = new TestMappedDataModel
+      {
+        Foo = Guid.NewGuid().ToString(),
+      };
+
+      modelFactory.CreateViewModel(dataModel).Foo.MustEqual(dataModel.Foo);
+    }
+
+    [TestMethod]
+    public void CreateDataModel_creates_object_from_view_model()
+    {
+      ModelFactory.RegisterType<TestMappedDataModel>();
+
+      ModelFactory<TestMappedDataModel, TestViewModel> modelFactory = new ModelFactory<TestMappedDataModel, TestViewModel>();
+      TestViewModel viewModel = new TestViewModel
+      {
+        Foo = Guid.NewGuid().ToString(),
+      };
+
+      modelFactory.CreateDataModel(viewModel).Foo.MustEqual(viewModel.Foo);
+    }
+
     private class TestMappedDataModel : DataModel<TestMappedDataModel, TestViewModel>
     {
       public string Foo { get; set; }

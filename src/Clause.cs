@@ -86,7 +86,7 @@ namespace SqlBuilder
           }
         case SqlOperator.LessThan:
           {
-            return "<=";
+            return "<";
           }
         case SqlOperator.LessThanOrEqual:
           {

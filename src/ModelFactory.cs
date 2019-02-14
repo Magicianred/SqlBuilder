@@ -105,7 +105,7 @@ namespace SqlBuilder
   {
     static ModelFactory()
     {
-      Cache = new ConcurrentDictionary<Key, IEnumerable<ModelColumn>>();
+      Cache = new ConcurrentDictionary<Key, IEnumerable<ModelColumn>>(new KeyComparer());
     }
 
     protected ModelFactory() { }

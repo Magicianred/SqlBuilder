@@ -64,7 +64,7 @@ namespace SqlBuilder
 
     public IEnumerable<Column> GetEditableColumns()
     {
-      return _columns.Where(x => x.IsEditable);
+      return GetDatabaseColumns().Where(x => x.IsEditable);
     }
 
     public readonly string OrderBy;

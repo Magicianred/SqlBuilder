@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertExtensions.cs" />
+    <Compile Include="ClauseTests.cs" />
     <Compile Include="DeleteTests.cs" />
     <Compile Include="Extensions\ExpressionExtensionsTests.cs" />
     <Compile Include="Extensions\ReflectionExtensionsTests.cs" />
@@ -58,6 +59,8 @@
     <Compile Include="Extensions\TypeExtensionsTests.cs" />
     <Compile Include="GroupByTests.cs" />
     <Compile Include="InsertTests.cs" />
+    <Compile Include="KeyTests.cs" />
+    <Compile Include="ModelColumnTests.cs" />
     <Compile Include="ModelDefinitionTests.cs" />
     <Compile Include="ModelFactoryTests.cs" />
     <Compile Include="OptionsTests.cs" />

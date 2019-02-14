@@ -1,7 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SqlBuilder.Attributes;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace SqlBuilder.UnitTest
 {
@@ -41,11 +43,34 @@ namespace SqlBuilder.UnitTest
     }
 
     [TestMethod]
-    public void fd()
+    public void GetDatabaseColumns_does_not_include_non_database_columns()
     {
       ModelDefinition modelDefinition = new ModelDefinition(typeof(Test));
 
-      modelDefinition.Options.MustEqual(SqlOptions.OptimiseForUnknown);
+      IEnumerable<Column> columns = modelDefinition.GetDatabaseColumns();
+
+      columns.Count().MustEqual(2);
+    }
+
+    [TestMethod]
+    public void GetEditableColumns_returns_edtiable_columns()
+    {
+      ModelDefinition modelDefinition = new ModelDefinition(typeof(Test));
+
+      IEnumerable<Column> columns = modelDefinition.GetEditableColumns();
+
+      columns.Count().MustEqual(1);
+      columns.First().Name.MustEqual(nameof(Test.Foo));
+    }
+
+    [TestMethod]
+    public void GetEditableColumns_does_not_return_key()
+    {
+      ModelDefinition modelDefinition = new ModelDefinition(typeof(Test));
+
+      IEnumerable<Column> columns = modelDefinition.GetEditableColumns();
+
+      columns.Any(x => string.Equals(x.Name, nameof(Test.Id))).MustBeFalse();
     }
 
     [Table("foo", Schema = "test")]
@@ -57,6 +82,9 @@ namespace SqlBuilder.UnitTest
 
       [OrderBy]
       public string Foo { get; set; }
+
+      [DatabaseGenerated(DatabaseGeneratedOption.None)]
+      public string NotForDb { get; set; }
     }
   }
 }
