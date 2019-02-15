@@ -174,6 +174,14 @@ namespace SqlBuilder
       Cache.Clear();
     }
 
+    public static IEnumerable<Key> Keys
+    {
+      get
+      {
+        return Cache.Keys;
+      }
+    }
+
     protected static IEnumerable<ModelColumn> GetColumns(Key key)
     {
       if (!Cache.ContainsKey(key))
