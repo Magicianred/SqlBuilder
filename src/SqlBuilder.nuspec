@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>SqlBuilder</id>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <title>SqlBuilder - query builder</title>
     <authors>Phil Cooper</authors>
     <owners>Phil Cooper</owners>

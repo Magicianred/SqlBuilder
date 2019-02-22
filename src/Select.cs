@@ -218,7 +218,7 @@ namespace SqlBuilder
       return _options;
     }
 
-    public void Randomise()
+    public Select Randomise()
     {
       // we do this in case of any overrides
       OrderBy orderBy = OrderBy();
@@ -232,6 +232,8 @@ namespace SqlBuilder
       {
         orderBy.Add(sql);
       }
+
+      return this;
     }
 
     public override string Sql()
