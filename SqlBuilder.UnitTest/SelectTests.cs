@@ -187,6 +187,23 @@ namespace SqlBuilder.UnitTest
       select.Parameters["@p1"].MustEqual("foo");
     }
 
+    /// <summary>
+    /// Bug found where calling select.Where().And("col", "foo") would throw because Where returns null.
+    /// </summary>
+    [TestMethod]
+    public void asfsfsd()
+    {
+      Select<DataModel> select = new Select<DataModel>();
+
+      select
+        .Where(x => x.Id, 1)
+        .And(x => x.Title, "foo");
+
+      select.Sql().MustEqual("select Id,Title from dbo.DataModel where (Id=@p0 And Title=@p1) order by Title");
+      select.Parameters["@p0"].MustEqual(1);
+      select.Parameters["@p1"].MustEqual("foo");
+    }
+
     private class DataModel
     {
       public int Id { get; set; }

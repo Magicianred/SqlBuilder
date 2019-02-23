@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SqlBuilder
 {
@@ -27,5 +23,11 @@ namespace SqlBuilder
     IClauseCollection Or();
 
     IClauseCollection Or(string column, SqlOperator sqlOperator, object value);
+
+    void Add(string @operator, Clause clause);
+
+    int Count { get; }
+
+    ParameterCollection Parameters { get; }
   }
 }

@@ -64,5 +64,28 @@ namespace SqlBuilder
 
       return clauseCollection;
     }
+
+    public static void Add(this IClauseCollection clauseCollection, string @operator, string column, SqlOperator sqlOperator, object value)
+    {
+      Clause clause = new Clause(clauseCollection.Parameters, column, sqlOperator, value);
+      clauseCollection.Add(@operator, clause);
+    }
+
+    public static void Add(this IClauseCollection clauseCollection, string column, SqlOperator sqlOperator, object value)
+    {
+      Add(clauseCollection, null, column, sqlOperator, value);
+    }
+
+    public static void Add(this IClauseCollection clauseCollection, Clause clause)
+    {
+      if (clauseCollection.Count > 0)
+      {
+        clauseCollection.Add(Clause.SqlAnd, clause);
+      }
+      else
+      {
+        clauseCollection.Add(null, clause);
+      }
+    }
   }
 }

@@ -187,13 +187,28 @@ namespace SqlBuilder
 
     public Select Where(string sql)
     {
-      _where = new Where(sql, Parameters);
+      Clause clause = new Clause(sql, Parameters);
+      Where(clause);
       return this;
     }
 
     public virtual IWhere Where()
     {
       return _where;
+    }
+
+    public void Where(Clause clause)
+    {
+      IWhere where = Where(); // in case it's been overriden
+
+      if (where == null)
+      {
+        _where = new Where(clause);
+      }
+      else
+      {
+        where.Add(clause);
+      }
     }
 
     public virtual bool IncludeCount()
@@ -308,7 +323,7 @@ namespace SqlBuilder
 
     private string _from;
 
-    private Where _where;
+    private IWhere _where;
 
     private Paging _paging;
 

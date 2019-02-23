@@ -69,6 +69,7 @@
     <Compile Include="ParameterCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Select.cs" />
+    <Compile Include="SelectExtensions.cs" />
     <Compile Include="SqlOperator.cs" />
     <Compile Include="SqlOptions.cs" />
     <Compile Include="SqlText.cs" />

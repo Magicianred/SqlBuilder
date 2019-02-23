@@ -8,15 +8,14 @@ namespace SqlBuilder.UnitTest
   public class IClauseCollectionExtensionsTests
   {
     [TestMethod]
-    public void TestMethod1()
+    public void And_calls_And_with_arguments()
     {
-      //A.Fake<IClauseCollection<T>>
-      ///IClauseCollectionExtensions.
+      IClauseCollection clauseCollection = A.Fake<IClauseCollection>();
+      IClauseCollectionExtensions.And(clauseCollection, "foo", 2);
+
+      A.CallTo(() => clauseCollection.And("foo", SqlOperator.Equal, 2)).MustHaveHappened();
     }
 
-    private class TestClass
-    {
-
-    }
+    private class TestClass { }
   }
 }

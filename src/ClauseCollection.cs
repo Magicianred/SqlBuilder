@@ -20,7 +20,7 @@ namespace SqlBuilder
 
     public IClauseCollection<T> Add<TProp>(string @operator, Expression<Func<T, TProp>> property, SqlOperator sqlOperator, TProp value)
     {
-      Add(@operator, property.MemberName(), sqlOperator, value);
+      this.Add(@operator, property.MemberName(), sqlOperator, value);
       return this;
     }
 
@@ -68,7 +68,7 @@ namespace SqlBuilder
 
     public IClauseCollection And(string column, SqlOperator sqlOperator, object value)
     {
-      Add(SqlAnd, column, sqlOperator, value);
+      this.Add(SqlAnd, column, sqlOperator, value);
       return this;
     }
 
@@ -79,20 +79,20 @@ namespace SqlBuilder
 
     public IClauseCollection Or(string column, SqlOperator sqlOperator, object value)
     {
-      Add(SqlOr, column, sqlOperator, value);
+      this.Add(SqlOr, column, sqlOperator, value);
       return this;
     }
 
     public override string Sql()
     {
-      if (Clauses.Count == 0)
+      if (Count == 0)
       {
         return null;
       }
 
       string sql;
 
-      if (Clauses.Count == 1)
+      if (Count == 1)
       {
         sql = Clauses[0].Sql();
       }
@@ -110,20 +110,16 @@ namespace SqlBuilder
       return string.Concat(Operator, Space, sql);
     }
 
-    public void Add(string @operator, string column, SqlOperator sqlOperator, object value)
-    {
-      Clause clause = new Clause(Parameters, column, sqlOperator, value);
-      Add(@operator, clause);
-    }
+    
 
-    protected void Add(string @operator, Clause clause)
+    public void Add(string @operator, Clause clause)
     {
       // only add the operator when we are on the next clause
-      if (Clauses.Count > 0)
+      if (Count > 0)
       {
         if (string.IsNullOrEmpty(@operator))
         {
-          throw new InvalidOperationException("Subsequent clauses must have a non null value.");
+          throw new InvalidOperationException("Subsequent clauses must supply an operator.");
         }
 
         clause.Operator = @operator;
@@ -132,9 +128,12 @@ namespace SqlBuilder
       Clauses.Add(clause);
     }
 
-    protected void Add(Clause clause)
+    public int Count
     {
-      Add(null, clause);
+      get
+      {
+        return Clauses.Count;
+      }
     }
 
     protected void Add(ClauseCollection clauseCollection)

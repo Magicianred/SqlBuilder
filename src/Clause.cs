@@ -21,6 +21,9 @@ namespace SqlBuilder
       ParameterName = Parameters.Add(value);
     }
 
+    public Clause(ParameterCollection parameters, string column, object value)
+      : this(parameters, column, SqlOperator.Equal, value) { }
+
     public override string Sql()
     {
       if (!string.IsNullOrEmpty(_sql))

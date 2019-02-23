@@ -10,7 +10,7 @@ namespace SqlBuilder
     public Where(string sql, ParameterCollection parameters)
       : this(parameters)
     {
-      Add(new Clause(sql, parameters));
+      this.Add(new Clause(sql, parameters));
     }
 
     public Where(ParameterCollection parameters)
@@ -32,9 +32,12 @@ namespace SqlBuilder
   public class Where : ClauseCollection, IWhere
   {
     public Where(string sql, ParameterCollection parameters)
-      : this(parameters)
+      : this(new Clause(sql, parameters)) { }
+
+    public Where(Clause clause)
+      : this(clause.Parameters)
     {
-      Add(new Clause(sql, parameters));
+      this.Add(clause);
     }
 
     public Where(ParameterCollection parameters)
