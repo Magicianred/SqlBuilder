@@ -14,7 +14,7 @@ namespace SqlBuilder
     new IClauseCollection<T> Or();
   }
 
-  public interface IClauseCollection
+  public interface IClauseCollection : ISqlText
   {
     IClauseCollection And();
 
@@ -27,7 +27,5 @@ namespace SqlBuilder
     void Add(string @operator, Clause clause);
 
     int Count { get; }
-
-    ParameterCollection Parameters { get; }
   }
 }
