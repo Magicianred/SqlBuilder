@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -9,6 +10,8 @@ namespace SqlBuilder
     public Update(object key, TDataModel dataModel)
       : base(dataModel)
     {
+      CheckDefinition();
+
       Parameters.Add(Definition.Key, key);
       _sets = Definition.GetEditableColumns().Select(x => x.Name);
     }
@@ -22,6 +25,8 @@ namespace SqlBuilder
     public Update(object key, TDataModel current, TDataModel next)
       : base()
     {
+      CheckDefinition();
+
       Parameters = GetDiffParameters(current, next);
       _sets = Parameters.Select(x => string.Concat(x.Key));
 
@@ -65,6 +70,14 @@ namespace SqlBuilder
       }
 
       return parameters;
+    }
+
+    private void CheckDefinition()
+    {
+      if(string.IsNullOrEmpty(Definition.Key))
+      {
+        throw new InvalidOperationException($"The data model {nameof(TDataModel)} does not have a key specified. Updates require a known key.");
+      }
     }
 
     private IEnumerable<string> _sets;

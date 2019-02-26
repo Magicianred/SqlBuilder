@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SqlBuilder.UnitTest
@@ -46,12 +47,29 @@ namespace SqlBuilder.UnitTest
       update.Sql().MustBeNull();
     }
 
+    [TestMethod]
+    public void update_ctor_fails_when_model_does_not_have_a_key()
+    {
+      Action action = () =>
+      {
+        TestModelNoKey model = new TestModelNoKey();
+        Update<TestModelNoKey> update = new Update<TestModelNoKey>(4, model);
+      };
+
+      action.MustThrow<InvalidOperationException>();
+    }
+
     private class TestModel
     {
       [Key]
       public int Id { get; set; }
 
       public string Title { get; set; }
+    }
+
+    private class TestModelNoKey
+    {
+      public int Id { get; set; }
     }
   }
 }
