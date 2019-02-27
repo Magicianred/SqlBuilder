@@ -13,8 +13,8 @@ namespace SqlBuilder.UnitTest
 
       parameterCollection.Add("foo", 2);
 
-      parameterCollection.Count.MustEqual(1);
-      parameterCollection["foo"].MustEqual(2);
+      parameterCollection.Count.MustBe(1);
+      parameterCollection["foo"].MustBe(2);
     }
 
     [TestMethod]
@@ -22,12 +22,12 @@ namespace SqlBuilder.UnitTest
     {
       ParameterCollection parameterCollection = new ParameterCollection();
 
-      parameterCollection.Add(1).MustEqual("@p0");
-      parameterCollection.Add(2).MustEqual("@p1");
+      parameterCollection.Add(1).MustBe("@p0");
+      parameterCollection.Add(2).MustBe("@p1");
 
-      parameterCollection.Count.MustEqual(2);
-      parameterCollection["@p0"].MustEqual(1);
-      parameterCollection["@p1"].MustEqual(2);
+      parameterCollection.Count.MustBe(2);
+      parameterCollection["@p0"].MustBe(1);
+      parameterCollection["@p1"].MustBe(2);
     }
 
     [TestMethod]
@@ -53,9 +53,9 @@ namespace SqlBuilder.UnitTest
         { "bar", 3 },
       });
 
-      parameterCollection.Count.MustEqual(3);
-      parameterCollection["@foo"].MustEqual(2);
-      parameterCollection["@bar"].MustEqual(3);
+      parameterCollection.Count.MustBe(3);
+      parameterCollection["@foo"].MustBe(2);
+      parameterCollection["@bar"].MustBe(3);
     }
 
     [TestMethod]
@@ -63,22 +63,22 @@ namespace SqlBuilder.UnitTest
     {
       ParameterCollection parameterCollection = new ParameterCollection();
 
-      parameterCollection.NextKey().MustEqual("@p0");
+      parameterCollection.NextKey().MustBe("@p0");
       parameterCollection.Add(0);
-      parameterCollection.NextKey().MustEqual("@p1");
+      parameterCollection.NextKey().MustBe("@p1");
     }
 
     [TestMethod]
     public void GetName_prepends_prefix()
     {
-      ParameterCollection.GetName("foo").MustEqual("@foo");
-      ParameterCollection.GetName("@foo").MustEqual("@foo");
+      ParameterCollection.GetName("foo").MustBe("@foo");
+      ParameterCollection.GetName("@foo").MustBe("@foo");
     }
 
     [TestMethod]
     public void ctor_creates_parameters_if_null()
     {
-      new ParameterCollection(null).Count.MustEqual(0);
+      new ParameterCollection(null).Count.MustBe(0);
     }
   }
 }

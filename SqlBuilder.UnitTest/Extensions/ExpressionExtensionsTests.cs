@@ -12,7 +12,7 @@ namespace SqlBuilder.UnitTest.Extensions
     {
       Expression<Func<TestClass, string>> expression = x => x.Foo;
 
-      expression.MemberName().MustEqual(nameof(TestClass.Foo));
+      expression.MemberName().MustBe(nameof(TestClass.Foo));
     }
 
     [TestMethod]
@@ -20,7 +20,7 @@ namespace SqlBuilder.UnitTest.Extensions
     {
       Expression<Func<TestClass, int>> expression = null;
 
-      Action action = () => expression.MemberName().MustEqual(nameof(TestClass.FooBar));
+      Action action = () => expression.MemberName().MustBe(nameof(TestClass.FooBar));
 
       action.MustThrow();
     }

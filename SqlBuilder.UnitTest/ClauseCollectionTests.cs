@@ -19,8 +19,8 @@ namespace SqlBuilder.UnitTest
       clauseCollection.Add(new Clause(parameters, "foo", "bar"));
       clauseCollection.Add(new Clause(parameters, "bar", "foo"));
 
-      parameters.Count().MustEqual(2);
-      clauseCollection.Sql().MustEqual("(foo=@p0 And bar=@p1)");
+      parameters.Count().MustBe(2);
+      clauseCollection.Sql().MustBe("(foo=@p0 And bar=@p1)");
     }
 
     [TestMethod]
@@ -31,8 +31,8 @@ namespace SqlBuilder.UnitTest
 
       clauseCollection.Add("foo", SqlOperator.LessThan, 1);
 
-      parameters.Count().MustEqual(1);
-      clauseCollection.Sql().MustEqual("foo<@p0");
+      parameters.Count().MustBe(1);
+      clauseCollection.Sql().MustBe("foo<@p0");
     }
   }
 }

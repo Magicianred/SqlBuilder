@@ -28,9 +28,11 @@ namespace SqlBuilder
       return key;
     }
 
-    public void Add(string name, object value)
+    public string Add(string name, object value)
     {
-      _parameters.Add(GetName(name), value);
+      string parameter = GetName(name);
+      _parameters.Add(parameter, value);
+      return parameter;
     }
 
     public void AddRange(Dictionary<string, object> parameters)

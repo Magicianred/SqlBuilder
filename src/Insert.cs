@@ -1,11 +1,15 @@
-﻿namespace SqlBuilder
+﻿using System.Linq;
+using System.Reflection;
+
+namespace SqlBuilder
 {
   public class Insert<TDataModel> : DML<TDataModel>
   {
     public Insert(TDataModel dataModel, bool retrieveKey = false)
-      : base(dataModel)
+      : base()
     {
       _retrieveKey = retrieveKey;
+      Parameters.AddRange(Definition.GetEditableColumns().ToDictionary(x => ParameterCollection.GetName(x.Name), x => x.GetMember().GetMemberValue(dataModel)));
     }
 
     public override string Sql()

@@ -13,7 +13,7 @@ namespace SqlBuilder.UnitTest
       TestClass testClass = new TestClass();
 
       new TestClass().Parameters.MustNotBeNull();
-      new TestClass().Parameters.Count.MustEqual(0);
+      new TestClass().Parameters.Count.MustBe(0);
     }
 
     public void sql_appends_to_builder()
@@ -22,7 +22,7 @@ namespace SqlBuilder.UnitTest
       StringBuilder stringBuilder = new StringBuilder();
       testClass.Sql(stringBuilder);
 
-      stringBuilder.ToString().MustEqual("foo bar");
+      stringBuilder.ToString().MustBe("foo bar");
     }
 
     private class TestClass : SqlText

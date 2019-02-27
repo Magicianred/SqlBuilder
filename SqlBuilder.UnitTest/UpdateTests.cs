@@ -16,10 +16,10 @@ namespace SqlBuilder.UnitTest
       };
       Update<TestModel> update = new Update<TestModel>(4, model);
 
-      update.Sql().MustEqual("update dbo.TestModel set Title=@Title where Id=@Id");
-      update.Parameters.Count.MustEqual(2);
-      update.Parameters["Id"].MustEqual(4);
-      update.Parameters["Title"].MustEqual("foo");
+      update.Sql().MustBe("update dbo.TestModel set Title=@Title where Id=@Id");
+      update.Parameters.Count.MustBe(2);
+      update.Parameters["Id"].MustBe(4);
+      update.Parameters["Title"].MustBe("foo");
     }
 
     [TestMethod]
@@ -30,9 +30,20 @@ namespace SqlBuilder.UnitTest
 
       Update<TestModel> update = new Update<TestModel>(4, current, next);
 
-      update.Parameters.Count.MustEqual(2);
-      update.Parameters["Title"].MustEqual("bar");
-      update.Parameters["Id"].MustEqual(4);
+      update.Parameters.Count.MustBe(2);
+      update.Parameters["Title"].MustBe("bar");
+      update.Parameters["Id"].MustBe(4);
+    }
+
+    [TestMethod]
+    public void update_has_correct_diff_sql()
+    {
+      TestModel current = new TestModel { Title = "foo" };
+      TestModel next = new TestModel { Title = "bar" };
+
+      Update<TestModel> update = new Update<TestModel>(4, current, next);
+
+      update.Sql().MustBe("update dbo.TestModel set Title=@Title where Id=@Id");
     }
 
     [TestMethod]
@@ -43,7 +54,7 @@ namespace SqlBuilder.UnitTest
 
       Update<TestModel> update = new Update<TestModel>(4, current, next);
 
-      update.Parameters.Count.MustEqual(0);
+      update.Parameters.Count.MustBe(0);
       update.Sql().MustBeNull();
     }
 

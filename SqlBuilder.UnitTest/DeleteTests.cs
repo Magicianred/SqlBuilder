@@ -11,9 +11,9 @@ namespace SqlBuilder.UnitTest
     {
       Delete<TestModel> delete = new Delete<TestModel>(4);
 
-      delete.Sql().MustEqual("delete from dbo.TestModel where Id=@Id");
-      delete.Parameters.Count.MustEqual(1);
-      delete.Parameters["Id"].MustEqual(4);
+      delete.Sql().MustBe("delete from dbo.TestModel where Id=@Id");
+      delete.Parameters.Count.MustBe(1);
+      delete.Parameters["Id"].MustBe(4);
     }
 
     private class TestModel

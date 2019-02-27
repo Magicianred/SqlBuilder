@@ -16,18 +16,18 @@ namespace SqlBuilder.UnitTest
       string sql = "foo=1";
       Clause clause = new Clause(sql, parameterCollection);
 
-      clause.Sql().MustEqual(sql);
+      clause.Sql().MustBe(sql);
     }
 
     [TestMethod]
     public void Sql_returns_generated_sql_string()
     {
-      new Clause(new ParameterCollection(), "foo", SqlOperator.GreaterThan, 1).Sql().MustEqual("foo>@p0");
-      new Clause(new ParameterCollection(), "foo", SqlOperator.Equal, 1).Sql().MustEqual("foo=@p0");
-      new Clause(new ParameterCollection(), "foo", SqlOperator.GreaterThanOrEqual, 1).Sql().MustEqual("foo>=@p0");
-      new Clause(new ParameterCollection(), "foo", SqlOperator.LessThan, 1).Sql().MustEqual("foo<@p0");
-      new Clause(new ParameterCollection(), "foo", SqlOperator.LessThanOrEqual, 1).Sql().MustEqual("foo<=@p0");
-      new Clause(new ParameterCollection(), "foo", SqlOperator.Like, "1").Sql().MustEqual("foo Like @p0");
+      new Clause(new ParameterCollection(), "foo", SqlOperator.GreaterThan, 1).Sql().MustBe("foo>@p0");
+      new Clause(new ParameterCollection(), "foo", SqlOperator.Equal, 1).Sql().MustBe("foo=@p0");
+      new Clause(new ParameterCollection(), "foo", SqlOperator.GreaterThanOrEqual, 1).Sql().MustBe("foo>=@p0");
+      new Clause(new ParameterCollection(), "foo", SqlOperator.LessThan, 1).Sql().MustBe("foo<@p0");
+      new Clause(new ParameterCollection(), "foo", SqlOperator.LessThanOrEqual, 1).Sql().MustBe("foo<=@p0");
+      new Clause(new ParameterCollection(), "foo", SqlOperator.Like, "1").Sql().MustBe("foo Like @p0");
     }
 
     [TestMethod]
@@ -36,7 +36,7 @@ namespace SqlBuilder.UnitTest
       new Clause(new ParameterCollection(), "foo", SqlOperator.GreaterThan, 1)
       {
         Operator = "And"
-      }.Sql().MustEqual("And foo>@p0");
+      }.Sql().MustBe("And foo>@p0");
     }
   }
 }

@@ -8,7 +8,7 @@ namespace SqlBuilder.UnitTest
     [TestMethod]
     public void returns_sql()
     {
-      new GroupBy("foo").Sql().MustEqual("group by foo");
+      new GroupBy("foo").Sql().MustBe("group by foo");
     }
   }
 }

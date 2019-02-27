@@ -9,16 +9,16 @@ namespace SqlBuilder.UnitTest.Extensions
     [TestMethod]
     public void ToCamelCase_converts()
     {
-      StringExtensions.ToCamelCase("FooBar").MustEqual("fooBar");
-      StringExtensions.ToCamelCase("fooBar").MustEqual("fooBar");
-      StringExtensions.ToCamelCase("foobar").MustEqual("foobar");
+      StringExtensions.ToCamelCase("FooBar").MustBe("fooBar");
+      StringExtensions.ToCamelCase("fooBar").MustBe("fooBar");
+      StringExtensions.ToCamelCase("foobar").MustBe("foobar");
     }
 
     [TestMethod]
     public void ToCamelCase_ignores_null_or_empty()
     {
       StringExtensions.ToCamelCase(null).MustBeNull();
-      StringExtensions.ToCamelCase("").MustEqual("");
+      StringExtensions.ToCamelCase("").MustBe("");
     }
   }
 }

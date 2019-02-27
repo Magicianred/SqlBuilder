@@ -10,7 +10,7 @@ namespace SqlBuilder.UnitTest
     {
       OrderBy orderBy = new OrderBy("foo asc");
 
-      orderBy.Sql().MustEqual("order by foo asc");
+      orderBy.Sql().MustBe("order by foo asc");
     }
 
     [TestMethod]

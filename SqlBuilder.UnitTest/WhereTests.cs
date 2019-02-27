@@ -18,7 +18,7 @@ namespace SqlBuilder.UnitTest
           .And("fooBar", "5")
           .And("barFoo", SqlOperator.GreaterThan, "7");
 
-      where.Sql().MustEqual("where (foo=@p0 And bar=@p1 Or (fooBar=@p2 And barFoo>@p3))");
+      where.Sql().MustBe("where (foo=@p0 And bar=@p1 Or (fooBar=@p2 And barFoo>@p3))");
     }
 
     [TestMethod]
@@ -33,7 +33,7 @@ namespace SqlBuilder.UnitTest
         .And()
           .Or("fooBar", "5");
 
-      where.Sql().MustEqual("where (foo=@p0 Or bar=@p1 And fooBar=@p2)");
+      where.Sql().MustBe("where (foo=@p0 Or bar=@p1 And fooBar=@p2)");
     }
   }
 }

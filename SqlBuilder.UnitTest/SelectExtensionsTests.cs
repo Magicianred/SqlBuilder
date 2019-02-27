@@ -12,9 +12,9 @@ namespace SqlBuilder.UnitTest
       Select select = new Select();
       SelectExtensions.Where(select, "foo", 2);
 
-      select.Parameters.Count().MustEqual(1);
-      select.Parameters["@p0"].MustEqual(2);
-      select.Where().Sql().MustEqual("where foo=@p0");
+      select.Parameters.Count().MustBe(1);
+      select.Parameters["@p0"].MustBe(2);
+      select.Where().Sql().MustBe("where foo=@p0");
     }
 
     [TestMethod]
@@ -23,9 +23,9 @@ namespace SqlBuilder.UnitTest
       Select select = new Select();
       SelectExtensions.Where(select, "foo", SqlOperator.LessThan, 2);
 
-      select.Parameters.Count().MustEqual(1);
-      select.Parameters["@p0"].MustEqual(2);
-      select.Where().Sql().MustEqual("where foo<@p0");
+      select.Parameters.Count().MustBe(1);
+      select.Parameters["@p0"].MustBe(2);
+      select.Where().Sql().MustBe("where foo<@p0");
     }
 
     [TestMethod]
@@ -35,10 +35,10 @@ namespace SqlBuilder.UnitTest
       select.Where(x => x.Id, 7);
       SelectExtensions.Where(select, "foo", SqlOperator.LessThan, 2);
 
-      select.Parameters.Count().MustEqual(2);
-      select.Parameters["@p0"].MustEqual(7);
-      select.Parameters["@p1"].MustEqual(2);
-      select.Where().Sql().MustEqual("where (Id=@p0 And foo<@p1)");
+      select.Parameters.Count().MustBe(2);
+      select.Parameters["@p0"].MustBe(7);
+      select.Parameters["@p1"].MustBe(2);
+      select.Where().Sql().MustBe("where (Id=@p0 And foo<@p1)");
     }
 
     private class TestClass

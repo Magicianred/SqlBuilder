@@ -8,16 +8,22 @@ namespace SqlBuilder
   public class Update<TDataModel> : DML<TDataModel>
   {
     public Update(object key, TDataModel dataModel)
-      : base(dataModel)
+      : base()
     {
       CheckDefinition();
 
       Parameters.Add(Definition.Key, key);
-      _sets = Definition.GetEditableColumns().Select(x => x.Name);
+
+      foreach (Column column in Definition.GetEditableColumns())
+      {
+        object value = column.GetMember().GetMemberValue(dataModel);
+        string name = Parameters.Add(column.Name, value);
+        _sets.Add(column.Name, name);
+      }
     }
 
     /// <summary>
-    /// Creates an instance of <see cref="Update{TDataModel}"/> which only updates properties that are different.
+    /// Creates an instance of <see cref="Update{TDataModel}"/> which only updates properties that have changed.
     /// </summary>
     /// <param name="key"></param>
     /// <param name="current"></param>
@@ -27,10 +33,20 @@ namespace SqlBuilder
     {
       CheckDefinition();
 
-      Parameters = GetDiffParameters(current, next);
-      _sets = Parameters.Select(x => string.Concat(x.Key));
+      // for each column check the current value against the next to see if there has been a change
+      foreach (Column column in Definition.GetEditableColumns())
+      {
+        object currentValue = column.GetMember().GetMemberValue(current);
+        object nextValue = column.GetMember().GetMemberValue(next);
 
-      // if we have parameters, add the key
+        if (currentValue != nextValue)
+        {
+          string name = Parameters.Add(column.Name, nextValue);
+          _sets.Add(column.Name, name);
+        }
+      }
+
+      // if we have any parameters to update from the check, add the key to the collection
       if (Parameters.Any())
       {
         Parameters.Add(Definition.Key, key);
@@ -44,42 +60,18 @@ namespace SqlBuilder
         return null;
       }
 
-      string set = string.Join(ListSeparator, _sets.Select(x => string.Concat(x, "=", ParameterCollection.GetName(x))));
+      string set = string.Join(ListSeparator, _sets.Select(x => string.Concat(x.Key, "=", x.Value)));
       return $"update {Table()} set {set} where {Definition.Key}={ParameterCollection.GetName(Definition.Key)}";
     }
-
-    /// <summary>
-    /// Returns a parameter collection containing only the parameters that are different between the two objects.
-    /// </summary>
-    /// <param name="current"></param>
-    /// <param name="next"></param>
-    /// <returns></returns>
-    private ParameterCollection GetDiffParameters(TDataModel current, TDataModel next)
-    {
-      ParameterCollection parameters = new ParameterCollection();
-
-      foreach (Column column in Definition.GetEditableColumns())
-      {
-        object currentValue = column.GetMember().GetMemberValue(current);
-        object nextValue = column.GetMember().GetMemberValue(next);
-
-        if (currentValue != nextValue)
-        {
-          parameters.Add(column.Name, nextValue);
-        }
-      }
-
-      return parameters;
-    }
-
+    
     private void CheckDefinition()
     {
       if(string.IsNullOrEmpty(Definition.Key))
       {
-        throw new InvalidOperationException($"The data model {nameof(TDataModel)} does not have a key specified. Updates require a known key.");
+        throw new InvalidOperationException($"The data model type {typeof(TDataModel)} does not have a key specified. Update requires a known key.");
       }
     }
 
-    private IEnumerable<string> _sets;
+    private IDictionary<string, string> _sets = new Dictionary<string, string>(0); // init here so we don't have to in ctor
   }
 }

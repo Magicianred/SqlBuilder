@@ -21,7 +21,7 @@ namespace SqlBuilder.UnitTest.Extensions
     {
       IEnumerable<MemberInfo> publicMembers = typeof(TestClass).GetPublicMembers();
 
-      publicMembers.Count().MustEqual(2);
+      publicMembers.Count().MustBe(2);
       publicMembers.Select(x => x.Name).MustContain(nameof(TestClass.PublicFooField), nameof(TestClass.PublicFooProperty));
     }
 

@@ -15,7 +15,7 @@ namespace SqlBuilder.UnitTest
     {
       ModelDefinition modelDefinition = new ModelDefinition(typeof(Test));
 
-      modelDefinition.OrderBy.MustEqual("Foo");
+      modelDefinition.OrderBy.MustBe("Foo");
     }
 
     [TestMethod]
@@ -23,7 +23,7 @@ namespace SqlBuilder.UnitTest
     {
       ModelDefinition modelDefinition = new ModelDefinition(typeof(Test));
 
-      modelDefinition.Key.MustEqual("Id");
+      modelDefinition.Key.MustBe("Id");
     }
 
     [TestMethod]
@@ -31,7 +31,7 @@ namespace SqlBuilder.UnitTest
     {
       ModelDefinition modelDefinition = new ModelDefinition(typeof(Test));
 
-      modelDefinition.TableName.MustEqual("test.foo");
+      modelDefinition.TableName.MustBe("test.foo");
     }
 
     [TestMethod]
@@ -39,7 +39,7 @@ namespace SqlBuilder.UnitTest
     {
       ModelDefinition modelDefinition = new ModelDefinition(typeof(Test));
 
-      modelDefinition.Options.MustEqual(SqlOptions.OptimiseForUnknown);
+      modelDefinition.Options.MustBe(SqlOptions.OptimiseForUnknown);
     }
 
     [TestMethod]
@@ -49,7 +49,7 @@ namespace SqlBuilder.UnitTest
 
       IEnumerable<Column> columns = modelDefinition.GetDatabaseColumns();
 
-      columns.Count().MustEqual(2);
+      columns.Count().MustBe(2);
     }
 
     [TestMethod]
@@ -59,8 +59,8 @@ namespace SqlBuilder.UnitTest
 
       IEnumerable<Column> columns = modelDefinition.GetEditableColumns();
 
-      columns.Count().MustEqual(1);
-      columns.First().Name.MustEqual(nameof(Test.Foo));
+      columns.Count().MustBe(1);
+      columns.First().Name.MustBe(nameof(Test.Foo));
     }
 
     [TestMethod]

@@ -16,10 +16,10 @@ namespace SqlBuilder.UnitTest
       };
       Insert<EditableTestModel> insert = new Insert<EditableTestModel>(testModel);
 
-      insert.Sql().MustEqual("insert into dbo.EditableTestModel(Id,Title) values(@Id,@Title);");
-      insert.Parameters.Count.MustEqual(2);
-      insert.Parameters["Id"].MustEqual(2);
-      insert.Parameters["Title"].MustEqual("test");
+      insert.Sql().MustBe("insert into dbo.EditableTestModel(Id,Title) values(@Id,@Title);");
+      insert.Parameters.Count.MustBe(2);
+      insert.Parameters["Id"].MustBe(2);
+      insert.Parameters["Title"].MustBe("test");
     }
 
     [TestMethod]
@@ -32,9 +32,9 @@ namespace SqlBuilder.UnitTest
       };
       Insert<TestModel> insert = new Insert<TestModel>(testModel);
 
-      insert.Sql().MustEqual("insert into dbo.TestModel(Title) values(@Title);");
-      insert.Parameters.Count.MustEqual(1);
-      insert.Parameters["Title"].MustEqual("test");
+      insert.Sql().MustBe("insert into dbo.TestModel(Title) values(@Title);");
+      insert.Parameters.Count.MustBe(1);
+      insert.Parameters["Title"].MustBe("test");
     }
 
     [TestMethod]
@@ -47,9 +47,9 @@ namespace SqlBuilder.UnitTest
       };
       Insert<TestModel> insert = new Insert<TestModel>(testModel, true);
 
-      insert.Sql().MustEqual("declare @output table(_key int);insert into dbo.TestModel(Title) output inserted.Id into @output values(@Title);select _key from @output;");
-      insert.Parameters.Count.MustEqual(1);
-      insert.Parameters["Title"].MustEqual("test");
+      insert.Sql().MustBe("declare @output table(_key int);insert into dbo.TestModel(Title) output inserted.Id into @output values(@Title);select _key from @output;");
+      insert.Parameters.Count.MustBe(1);
+      insert.Parameters["Title"].MustBe("test");
     }
 
     private class TestModel

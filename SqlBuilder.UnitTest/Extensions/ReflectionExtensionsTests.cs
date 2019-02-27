@@ -35,7 +35,7 @@ namespace SqlBuilder.UnitTest.Extensions
         Foo = 9,
       };
 
-      testClass.GetType().GetMember(nameof(TestClass.Foo), BindingFlags.Instance | BindingFlags.Public).First().GetMemberValue(testClass).MustEqual(testClass.Foo);
+      testClass.GetType().GetMember(nameof(TestClass.Foo), BindingFlags.Instance | BindingFlags.Public).First().GetMemberValue(testClass).MustBe(testClass.Foo);
     }
 
     [TestMethod]
@@ -46,7 +46,7 @@ namespace SqlBuilder.UnitTest.Extensions
         BarField = "1234566777",
       };
 
-      testClass.GetType().GetMember(nameof(TestClass.BarField), BindingFlags.Instance | BindingFlags.Public).First().GetMemberValue(testClass).MustEqual(testClass.BarField);
+      testClass.GetType().GetMember(nameof(TestClass.BarField), BindingFlags.Instance | BindingFlags.Public).First().GetMemberValue(testClass).MustBe(testClass.BarField);
     }
 
     [TestMethod]
@@ -59,7 +59,7 @@ namespace SqlBuilder.UnitTest.Extensions
 
       testClass.GetType().GetMember(nameof(TestClass.Foo), BindingFlags.Instance | BindingFlags.Public).First().SetMemberValue(testClass, 999);
 
-      testClass.Foo.MustEqual(999);
+      testClass.Foo.MustBe(999);
     }
 
     [TestMethod]
@@ -72,7 +72,7 @@ namespace SqlBuilder.UnitTest.Extensions
 
       testClass.GetType().GetMember(nameof(TestClass.BarField), BindingFlags.Instance | BindingFlags.Public).First().SetMemberValue(testClass, "fooBar");
 
-      testClass.BarField.MustEqual("fooBar");
+      testClass.BarField.MustBe("fooBar");
     }
 
     [TestMethod]

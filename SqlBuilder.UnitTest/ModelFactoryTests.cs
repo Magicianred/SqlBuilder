@@ -27,7 +27,7 @@ namespace SqlBuilder.UnitTest
 
       ModelFactory<TestMappedDataModel, TestViewModel> modelFactory = new ModelFactory<TestMappedDataModel, TestViewModel>();
 
-      modelFactory.FindDataModelMember("Foo").MustEqual("Foo");
+      modelFactory.FindDataModelMember("Foo").MustBe("Foo");
     }
 
     [TestMethod]
@@ -41,7 +41,7 @@ namespace SqlBuilder.UnitTest
         Foo = Guid.NewGuid().ToString(),
       };
 
-      modelFactory.CreateViewModel(dataModel).Foo.MustEqual(dataModel.Foo);
+      modelFactory.CreateViewModel(dataModel).Foo.MustBe(dataModel.Foo);
     }
 
     [TestMethod]
@@ -55,7 +55,7 @@ namespace SqlBuilder.UnitTest
         Foo = Guid.NewGuid().ToString(),
       };
 
-      modelFactory.CreateDataModel(viewModel).Foo.MustEqual(viewModel.Foo);
+      modelFactory.CreateDataModel(viewModel).Foo.MustBe(viewModel.Foo);
     }
 
     private class TestMappedDataModel : DataModel<TestMappedDataModel, TestViewModel>

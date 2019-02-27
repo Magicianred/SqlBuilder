@@ -11,7 +11,7 @@ namespace SqlBuilder.UnitTest
     public void include_count_adds_count_recordset()
     {
       Select<DataModel> select = new Select<DataModel>(includeCount: true);
-      select.Sql().MustEqual("select Id,Title from dbo.DataModel order by Title;select count(*) from dbo.DataModel");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel order by Title;select count(*) from dbo.DataModel");
     }
 
     [TestMethod]
@@ -19,7 +19,7 @@ namespace SqlBuilder.UnitTest
     {
       Select<DataModel> select = new Select<DataModel>(includeCount: true);
       select.Where("Title='test'");
-      select.Sql().MustEqual("select Id,Title from dbo.DataModel where Title='test' order by Title;select count(*) from dbo.DataModel where Title='test'");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel where Title='test' order by Title;select count(*) from dbo.DataModel where Title='test'");
     }
 
     [TestMethod]
@@ -30,7 +30,7 @@ namespace SqlBuilder.UnitTest
       select.Where("Title='test'");
       select.OrderBy("Title");
       // note it uses top because we want the first page
-      select.Sql().MustEqual("select top 10 Id,Title from dbo.DataModel where Title='test' order by Title");
+      select.Sql().MustBe("select top 10 Id,Title from dbo.DataModel where Title='test' order by Title");
     }
 
     [TestMethod]
@@ -38,7 +38,7 @@ namespace SqlBuilder.UnitTest
     {
       Select<DataModel> select = new Select<DataModel>();
       select.Column(x => x.Id);
-      select.Sql().MustEqual("select Id from dbo.DataModel order by Title");
+      select.Sql().MustBe("select Id from dbo.DataModel order by Title");
     }
 
     [TestMethod]
@@ -46,7 +46,7 @@ namespace SqlBuilder.UnitTest
     {
       Select<DataModel> select = new Select<DataModel>();
       select.OrderBy(x => x.Id);
-      select.Sql().MustEqual("select Id,Title from dbo.DataModel order by Id");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel order by Id");
     }
 
     [TestMethod]
@@ -54,7 +54,7 @@ namespace SqlBuilder.UnitTest
     {
       Select<DataModel> select = new Select<DataModel>();
       select.OrderBy(x => x.Id, false);
-      select.Sql().MustEqual("select Id,Title from dbo.DataModel order by Id desc");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel order by Id desc");
     }
 
     [TestMethod]
@@ -62,7 +62,7 @@ namespace SqlBuilder.UnitTest
     {
       Select<DataModel> select = new Select<DataModel>();
       select.GroupBy(x => x.Id);
-      select.Sql().MustEqual("select Id,Title from dbo.DataModel order by Title group by Id");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel order by Title group by Id");
     }
 
     [TestMethod]
@@ -70,9 +70,9 @@ namespace SqlBuilder.UnitTest
     {
       Select<DataModel> select = new Select<DataModel>();
       select.Where(x => x.Title, "fooBar");
-      select.Sql().MustEqual("select Id,Title from dbo.DataModel where Title=@p0 order by Title");
-      select.Parameters.Count.MustEqual(1);
-      select.Parameters["@p0"].MustEqual("fooBar");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel where Title=@p0 order by Title");
+      select.Parameters.Count.MustBe(1);
+      select.Parameters["@p0"].MustBe("fooBar");
     }
 
     [TestMethod]
@@ -80,7 +80,7 @@ namespace SqlBuilder.UnitTest
     {
       Select<DataModel> select = new Select<DataModel>();
       select.Column(x => x.Title);
-      select.Sql().MustEqual("select Title from dbo.DataModel order by Title");
+      select.Sql().MustBe("select Title from dbo.DataModel order by Title");
     }
 
     [TestMethod]
@@ -90,7 +90,7 @@ namespace SqlBuilder.UnitTest
       // called in different order
       select.Column(x => x.Title);
       select.Column(x => x.Id);
-      select.Sql().MustEqual("select Title,Id from dbo.DataModel order by Title");
+      select.Sql().MustBe("select Title,Id from dbo.DataModel order by Title");
     }
 
     [TestMethod]
@@ -98,7 +98,7 @@ namespace SqlBuilder.UnitTest
     {
       Select<DataModel> select = new Select<DataModel>();
       select.Options(SqlOptions.SetArithabort);
-      select.Sql().MustEqual("set arithabort on\r\nselect Id,Title from dbo.DataModel order by Title");
+      select.Sql().MustBe("set arithabort on\r\nselect Id,Title from dbo.DataModel order by Title");
     }
 
     [TestMethod]
@@ -106,7 +106,7 @@ namespace SqlBuilder.UnitTest
     {
       Select<DataModel> select = new Select<DataModel>();
       select.Options(SqlOptions.Recompile);
-      select.Sql().MustEqual("select Id,Title from dbo.DataModel order by Title option (recompile)");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel order by Title option (recompile)");
     }
 
     [TestMethod]
@@ -114,7 +114,7 @@ namespace SqlBuilder.UnitTest
     {
       Select<DataModel> select = new Select<DataModel>();
       select.Options(SqlOptions.OptimiseForUnknown);
-      select.Sql().MustEqual("select Id,Title from dbo.DataModel order by Title option (optimize for unknown)");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel order by Title option (optimize for unknown)");
     }
 
     [TestMethod]
@@ -122,7 +122,7 @@ namespace SqlBuilder.UnitTest
     {
       Select<DataModel> select = new Select<DataModel>();
       select.Options(SqlOptions.Recompile | SqlOptions.OptimiseForUnknown);
-      select.Sql().MustEqual("select Id,Title from dbo.DataModel order by Title option (recompile,optimize for unknown)");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel order by Title option (recompile,optimize for unknown)");
     }
 
     [TestMethod]
@@ -131,7 +131,7 @@ namespace SqlBuilder.UnitTest
       Select<DataModel> select = new Select<DataModel>();
       select.IncludeCount(true);
       select.Options(SqlOptions.Recompile);
-      select.Sql().MustEqual("select Id,Title from dbo.DataModel order by Title option (recompile);select count(*) from dbo.DataModel option (recompile)");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel order by Title option (recompile);select count(*) from dbo.DataModel option (recompile)");
     }
 
     /// <summary>
@@ -156,7 +156,7 @@ namespace SqlBuilder.UnitTest
       select.OrderBy("foo");
       select.From("bar");
 
-      select.Sql().MustEqual("select top 1 * from bar order by foo");
+      select.Sql().MustBe("select top 1 * from bar order by foo");
     }
 
     [TestMethod]
@@ -167,7 +167,7 @@ namespace SqlBuilder.UnitTest
       select.From("bar");
       select.Randomise();
 
-      select.Sql().MustEqual("select * from bar order by foo,NEWID()");
+      select.Sql().MustBe("select * from bar order by foo,NEWID()");
     }
 
     /// <summary>
@@ -182,9 +182,9 @@ namespace SqlBuilder.UnitTest
         .Where(x => x.Id, 1)
         .And(x => x.Title, "foo");
 
-      select.Sql().MustEqual("select Id,Title from dbo.DataModel where (Id=@p0 And Title=@p1) order by Title");
-      select.Parameters["@p0"].MustEqual(1);
-      select.Parameters["@p1"].MustEqual("foo");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel where (Id=@p0 And Title=@p1) order by Title");
+      select.Parameters["@p0"].MustBe(1);
+      select.Parameters["@p1"].MustBe("foo");
     }
 
     /// <summary>
@@ -199,9 +199,9 @@ namespace SqlBuilder.UnitTest
         .Where(x => x.Id, 1)
         .And(x => x.Title, "foo");
 
-      select.Sql().MustEqual("select Id,Title from dbo.DataModel where (Id=@p0 And Title=@p1) order by Title");
-      select.Parameters["@p0"].MustEqual(1);
-      select.Parameters["@p1"].MustEqual("foo");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel where (Id=@p0 And Title=@p1) order by Title");
+      select.Parameters["@p0"].MustBe(1);
+      select.Parameters["@p1"].MustBe("foo");
     }
 
     private class DataModel

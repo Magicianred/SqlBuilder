@@ -12,7 +12,7 @@ namespace SqlBuilder.UnitTest
       throw new Exception($"Assert failed with {message}");
     }
 
-    public static void MustEqual<T>(this T actual, T expected)
+    public static void MustBe<T>(this T actual, T expected)
     {
       Assert.AreEqual(expected, actual);
     }
