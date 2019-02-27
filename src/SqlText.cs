@@ -26,7 +26,7 @@ namespace SqlBuilder
       }
     }
 
-    public ParameterCollection Parameters { get; protected set; }
+    public virtual ParameterCollection Parameters { get; protected set; }
 
     protected const string ListSeparator = ",";
 
