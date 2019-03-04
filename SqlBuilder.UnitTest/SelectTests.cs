@@ -76,6 +76,16 @@ namespace SqlBuilder.UnitTest
     }
 
     [TestMethod]
+    public void where_adds_clause_with_operator()
+    {
+      Select<DataModel> select = new Select<DataModel>();
+      select.Where(x => x.Title, SqlOperator.LessThan, "fooBar");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel where Title<@p0 order by Title");
+      select.Parameters.Count.MustBe(1);
+      select.Parameters["@p0"].MustBe("fooBar");
+    }
+
+    [TestMethod]
     public void column_adds_and_returns_column()
     {
       Select<DataModel> select = new Select<DataModel>();
@@ -191,7 +201,7 @@ namespace SqlBuilder.UnitTest
     /// Bug found where calling select.Where().And("col", "foo") would throw because Where returns null.
     /// </summary>
     [TestMethod]
-    public void asfsfsd()
+    public void where_returning_null_when_chaining()
     {
       Select<DataModel> select = new Select<DataModel>();
 

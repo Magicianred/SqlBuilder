@@ -1,4 +1,7 @@
-﻿namespace SqlBuilder
+﻿using System;
+using System.Linq.Expressions;
+
+namespace SqlBuilder
 {
   public static class SelectExtensions
   {

@@ -47,6 +47,11 @@ namespace SqlBuilder
 
     public IClauseCollection<TDataModel> Where<TProp>(Expression<Func<TDataModel, TProp>> property, TProp value, Func<bool> enabled = null)
     {
+      return Where(property, SqlOperator.Equal, value);
+    }
+
+    public IClauseCollection<TDataModel> Where<TProp>(Expression<Func<TDataModel, TProp>> property, SqlOperator sqlOperator, TProp value, Func<bool> enabled = null)
+    {
       if (_where == null)
       {
         _where = new Where<TDataModel>(Parameters);
@@ -57,7 +62,7 @@ namespace SqlBuilder
         return _where;
       }
 
-      return _where.And(property, value);
+      return _where.And(property, sqlOperator, value);
     }
 
     public override IWhere Where()
