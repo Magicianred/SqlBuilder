@@ -62,7 +62,15 @@ namespace SqlBuilder.UnitTest
     {
       Select<DataModel> select = new Select<DataModel>();
       select.GroupBy(x => x.Id);
-      select.Sql().MustBe("select Id,Title from dbo.DataModel order by Title group by Id");
+      select.Sql().MustBe("select Id,Title from dbo.DataModel group by Id order by Title");
+    }
+
+    [TestMethod]
+    public void groupby_adds_column_and_allows_null_orderby()
+    {
+      Select<DataModel> select = new Select<DataModel>("Max(Id)");
+      select.GroupBy(x => x.Id, null);
+      select.Sql().MustBe("select Max(Id) from dbo.DataModel group by Id");
     }
 
     [TestMethod]

@@ -14,6 +14,7 @@ namespace SqlBuilder
         : base(columns, includeCount)
     {
       _definition = definition;
+      _orderBy = new OrderBy(_definition.OrderBy);
     }
 
     public Select<TDataModel> Column<TProp>(Expression<Func<TDataModel, TProp>> property)
@@ -36,6 +37,13 @@ namespace SqlBuilder
     public Select<TDataModel> OrderBy<TProp>(Expression<Func<TDataModel, TProp>> property, bool ascending = true)
     {
       OrderBy(property.MemberName(), ascending);
+      return this;
+    }
+
+    public Select<TDataModel> GroupBy<TProp>(Expression<Func<TDataModel, TProp>> property, OrderBy orderBy)
+    {
+      GroupBy(property);
+      _orderBy = orderBy;
       return this;
     }
 
@@ -101,7 +109,7 @@ namespace SqlBuilder
 
     public override OrderBy OrderBy()
     {
-      return base.OrderBy() ?? new OrderBy(_definition.OrderBy);
+      return base.OrderBy() ?? _orderBy;
     }
 
     public override string From()
@@ -124,6 +132,8 @@ namespace SqlBuilder
     private readonly ModelDefinition _definition;
 
     private Where<TDataModel> _where;
+
+    private OrderBy _orderBy;
   }
 
   public class Select : SqlText
@@ -287,14 +297,14 @@ namespace SqlBuilder
         where.Sql(builder);
       }
 
-      if (orderBy != null)
-      {
-        orderBy.Sql(builder);
-      }
-
       if (groupBy != null)
       {
         groupBy.Sql(builder);
+      }
+
+      if (orderBy != null)
+      {
+        orderBy.Sql(builder);
       }
 
       if (paging != null && !paging.IsTop)
