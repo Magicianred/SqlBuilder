@@ -10,5 +10,7 @@
     GreaterThanOrEqual,
     LessThan,
     LessThanOrEqual,
+    IsNot,
+    Is,
   }
 }

@@ -34,20 +34,35 @@ namespace SqlBuilder
       string sql;
       string sqlOperator = GetSqlOperator(SqlOperator);
 
-      if (SqlOperator == SqlOperator.Like)
+      // special clauses
+      if (SqlOperator == SqlOperator.Is || SqlOperator == SqlOperator.IsNot)
       {
+        // we only support 'is' and 'is not' with null
+        if (Parameters[ParameterName] != null)
+        {
+          throw new InvalidOperationException($"Attempting to use '{SqlOperator}' operator with non-null value.  This operator is only support with null.");
+        }
+
+        sql = string.Concat(Column, Space, sqlOperator, Space, "null");
+      }
+      else if (SqlOperator == SqlOperator.Like)
+      {
+        // special like formatting
         sql = string.Concat(Column, Space, sqlOperator, Space, ParameterName);
       }
       else
       {
+        // all other operators
         sql = string.Concat(Column, sqlOperator, ParameterName);
       }
 
+      // if no operator simply return the sql
       if (string.IsNullOrEmpty(Operator))
       {
         return sql;
       }
 
+      // return sql with operator
       return string.Concat(Operator, Space, sql);
     }
 
@@ -68,8 +83,9 @@ namespace SqlBuilder
       switch (sqlOperator)
       {
         case SqlOperator.Like:
+        case SqlOperator.Is:
           {
-            return "Like";
+            return sqlOperator.ToString();
           }
         case SqlOperator.Equal:
           {
@@ -95,9 +111,13 @@ namespace SqlBuilder
           {
             return "<=";
           }
+        case SqlOperator.IsNot:
+          {
+            return "Is Not";
+          }
         default:
           {
-            throw new NotImplementedException($"{nameof(SqlOperator)} {sqlOperator} not recognised in {nameof(SqlText)}");
+            throw new NotImplementedException($"{nameof(SqlOperator)} {sqlOperator} not recognised in {nameof(SqlText)}.");
           }
       }
     }

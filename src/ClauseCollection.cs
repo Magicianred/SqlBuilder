@@ -110,8 +110,6 @@ namespace SqlBuilder
       return string.Concat(Operator, Space, sql);
     }
 
-    
-
     public void Add(string @operator, Clause clause)
     {
       // only add the operator when we are on the next clause

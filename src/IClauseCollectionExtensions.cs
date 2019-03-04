@@ -35,6 +35,18 @@ namespace SqlBuilder
       return clauseCollection;
     }
 
+    public static IClauseCollection<T> AndIsNotNull<T, TProp>(this IClauseCollection<T> clauseCollection, Expression<Func<T, TProp>> property)
+    {
+      clauseCollection.And(property.MemberName(), SqlOperator.IsNot, "null");
+      return clauseCollection;
+    }
+
+    public static IClauseCollection<T> AndIsNull<T, TProp>(this IClauseCollection<T> clauseCollection, Expression<Func<T, TProp>> property)
+    {
+      clauseCollection.And(property.MemberName(), SqlOperator.Is, "null");
+      return clauseCollection;
+    }
+
     public static IClauseCollection Or(this IClauseCollection clauseCollection, string column, object value)
     {
       return clauseCollection.Or(column, SqlOperator.Equal, value);
@@ -62,6 +74,18 @@ namespace SqlBuilder
         clauseCollection.Or(property, sqlOperator, value);
       }
 
+      return clauseCollection;
+    }
+
+    public static IClauseCollection<T> OrIsNotNull<T, TProp>(this IClauseCollection<T> clauseCollection, Expression<Func<T, TProp>> property)
+    {
+      clauseCollection.Or(property.MemberName(), SqlOperator.IsNot, "null");
+      return clauseCollection;
+    }
+
+    public static IClauseCollection<T> OrIsNull<T, TProp>(this IClauseCollection<T> clauseCollection, Expression<Func<T, TProp>> property)
+    {
+      clauseCollection.Or(property.MemberName(), SqlOperator.Is, "null");
       return clauseCollection;
     }
 
