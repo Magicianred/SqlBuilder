@@ -1,9 +1,13 @@
 version: 1.0.{build}
 image: Visual Studio 2017
+cache: packages -> **\packages.config
 nuget:
-  project_feed: true
+  account_feed: false
+  project_feed: false
 before_build:
 - cmd: nuget restore
+install:
+  nuget sources add -Name AppVeyorAccount -source https://ci.appveyor.com/nuget/restlessmedia-fqb6idr6vwjb -UserName %APPVEYOR_USERNAME% -password "%APPVEYOR_PASSWORD%"
 build:
   publish_nuget: true
   include_nuget_references: true

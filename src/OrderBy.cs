@@ -22,6 +22,11 @@ namespace SqlBuilder
       _collection.Add(sql);
     }
 
+    public void Add(int index, string sql)
+    {
+      _collection.Insert(index, sql);
+    }
+
     public override string Sql()
     {
       switch (_collection.Count)

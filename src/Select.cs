@@ -260,7 +260,7 @@ namespace SqlBuilder
       }
       else
       {
-        orderBy.Add(sql);
+        orderBy.Add(0, sql);
       }
 
       return this;

@@ -177,15 +177,18 @@ namespace SqlBuilder.UnitTest
       select.Sql().MustBe("select top 1 * from bar order by foo");
     }
 
+    /// <summary>
+    /// This fixes a data bug where randomising with an order by will break the random data
+    /// </summary>
     [TestMethod]
-    public void randomise_adds_order_by()
+    public void randomise_adds_order_by_and_ignores_all_other_order_by()
     {
       Select select = new Select();
       select.OrderBy("foo");
       select.From("bar");
       select.Randomise();
 
-      select.Sql().MustBe("select * from bar order by foo,NEWID()");
+      select.Sql().MustBe("select * from bar order by NEWID(),foo");
     }
 
     /// <summary>
