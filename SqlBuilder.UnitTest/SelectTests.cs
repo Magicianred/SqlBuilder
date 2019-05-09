@@ -265,7 +265,8 @@ namespace SqlBuilder.UnitTest
       [OrderBy]
       public string Title { get; set; }
 
-      public NestedDataModel Nested { get; set; }
+      //WIP
+      //private NestedDataModel Nested { get; set; }
     }
 
     private class NestedDataModel
