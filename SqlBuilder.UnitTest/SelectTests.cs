@@ -258,6 +258,55 @@ namespace SqlBuilder.UnitTest
       //select.LeftJoin(x => x.Id, x => x.Nested.Id);
     }
 
+    [TestMethod]
+    public void complex_select_with_joins_and_adhoc_where_clauses()
+    {
+      Select<VProperty> select = new Select<VProperty>();
+      select
+        .Column(x => x.Title)
+        .Column(x => x.Latitude)
+        .Column(x => x.Longitude)
+        .LeftJoin("dbo.TProperty P", "P.PropertyId = @propertyId")
+        .LeftJoin("dbo.TAddress PA", "PA.AddressId = P.AddressId")
+        .OrderBy("RP.Cost")
+        .Where("RP.PropertyId != P.PropertyId")
+        .And("RP.PostCodeFirstPart = PA.PostCodeFirstPart")
+        .And("RP.BedroomCount = P.BedroomCount")
+        .And("RP.Cost between ROUND(P.Cost - ((P.Cost/100) * 5), -5) AND ROUND(P.Cost + ((P.Cost/100) * 5), +5)")
+        .And("RP.[Status] != 4");
+
+      string sql = select.Sql();
+    }
+
+    [TestMethod]
+    public void simplified_select_with_adhoc_where_clauses()
+    {
+      Select<VProperty> select = new Select<VProperty>();
+      select
+        .Column(x => x.Title)
+        .Where("RP.PropertyId != P.PropertyId")
+        .And("RP.PostCodeFirstPart = PA.PostCodeFirstPart");
+
+      select.Sql().MustBe("select Title from dbo.VProperty where (RP.PropertyId != P.PropertyId And RP.PostCodeFirstPart = PA.PostCodeFirstPart)");
+    }
+
+    [TestMethod]
+    public void creating_instance_with_modeldefinition_and_emptyorderby_does_not_add_empty_orderby()
+    {
+      ModelDefinition modelDefinition = new ModelDefinition(typeof(VProperty));
+
+      Select<VProperty> select = new Select<VProperty>(modelDefinition);
+    }
+
+    private class VProperty
+    {
+      public string Title { get; set; }
+
+      public double? Latitude { get; set; }
+
+      public double? Longitude { get; set; }
+    }
+
     private class DataModel
     {
       public int Id { get; set; }

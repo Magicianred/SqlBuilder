@@ -73,6 +73,14 @@ namespace SqlBuilder.UnitTest
       columns.Any(x => string.Equals(x.Name, nameof(Test.Id))).MustBeFalse();
     }
 
+    [TestMethod]
+    public void orderby_null_when_not_found()
+    {
+      ModelDefinition modelDefinition = new ModelDefinition(typeof(TestNoOrderBy));
+
+      modelDefinition.OrderBy.MustBeNull();
+    }
+
     [Table("foo", Schema = "test")]
     [SqlOptions(Options = SqlOptions.OptimiseForUnknown)]
     private class Test
@@ -85,6 +93,13 @@ namespace SqlBuilder.UnitTest
 
       [DatabaseGenerated(DatabaseGeneratedOption.None)]
       public string NotForDb { get; set; }
+    }
+
+    private class TestNoOrderBy
+    {
+      public int Id { get; set; }
+
+      public string Foo { get; set; }
     }
   }
 }

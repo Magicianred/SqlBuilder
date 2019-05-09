@@ -14,7 +14,11 @@ namespace SqlBuilder
         : base(columns, includeCount)
     {
       _definition = definition;
-      _orderBy = new OrderBy(_definition.OrderBy);
+
+      if (!string.IsNullOrEmpty(_definition.OrderBy))
+      {
+        _orderBy = new OrderBy(_definition.OrderBy);
+      }
     }
 
     public Select<TDataModel> Column<TProp>(Expression<Func<TDataModel, TProp>> property)
@@ -217,11 +221,14 @@ namespace SqlBuilder
       return _paging;
     }
 
-    public Select Where(string sql)
+    public IClauseCollection Where(string sql)
     {
-      Clause clause = new Clause(sql, Parameters);
-      Where(clause);
-      return this;
+      if (_where == null)
+      {
+        _where = new Where(Parameters);
+      }
+
+      return _where.And(sql);
     }
 
     public virtual IWhere Where()
@@ -229,18 +236,18 @@ namespace SqlBuilder
       return _where;
     }
 
-    public void Where(Clause clause)
+    public IWhere Where(Clause clause)
     {
       IWhere where = Where(); // in case it's been overriden
 
       if (where == null)
       {
         _where = new Where(clause);
+        return _where;
       }
-      else
-      {
-        where.Add(clause);
-      }
+
+      where.Add(clause);
+      return where;
     }
 
     public virtual bool IncludeCount()

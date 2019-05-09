@@ -20,6 +20,19 @@ namespace SqlBuilder.UnitTest
     }
 
     [TestMethod]
+    public void Sql_returns_sql_string_when_passed_with_operator()
+    {
+      ParameterCollection parameterCollection = new ParameterCollection();
+      string sql = "foo=1";
+      Clause clause = new Clause(sql, parameterCollection)
+      {
+        Operator = Clause.SqlAnd,
+      };
+
+      clause.Sql().MustBe("And foo=1");
+    }
+
+    [TestMethod]
     public void Sql_returns_generated_sql_string()
     {
       new Clause(new ParameterCollection(), "foo", SqlOperator.GreaterThan, 1).Sql().MustBe("foo>@p0");

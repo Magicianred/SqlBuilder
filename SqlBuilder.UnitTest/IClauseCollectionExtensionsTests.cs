@@ -57,6 +57,40 @@ namespace SqlBuilder.UnitTest
       A.CallTo(() => clauseCollection.Or("Title", SqlOperator.Is, "null")).MustHaveHappened();
     }
 
+    [TestMethod]
+    public void And_calls_Add_with_arguments()
+    {
+      IClauseCollection clauseCollection = A.Fake<IClauseCollection>();
+
+      IClauseCollectionExtensions.And(clauseCollection, "1=1");
+
+      // assert the 2nd argument of Add() was called with the clause argument where the sql matches and with the correct operator
+      A.CallTo(() => clauseCollection.Add("And", A<Clause>.Ignored))
+        .WhenArgumentsMatch(x =>
+        {
+          return
+            x.Get<string>(0) == "And" &&
+            x.Get<Clause>(1).Sql() == "1=1";
+        }).MustHaveHappened();
+    }
+
+    [TestMethod]
+    public void Or_calls_Add_with_arguments()
+    {
+      IClauseCollection clauseCollection = A.Fake<IClauseCollection>();
+
+      IClauseCollectionExtensions.Or(clauseCollection, "1=1");
+
+      // assert the 2nd argument of Add() was called with the clause argument where the sql matches and with the correct operator
+      A.CallTo(() => clauseCollection.Add("And", A<Clause>.Ignored))
+        .WhenArgumentsMatch(x =>
+        {
+          return
+            x.Get<string>(0) == "Or" &&
+            x.Get<Clause>(1).Sql() == "1=1";
+        }).MustHaveHappened();
+    }
+
     public class TestClass
     {
       public string Title { get; set; }

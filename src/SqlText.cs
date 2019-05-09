@@ -28,7 +28,7 @@ namespace SqlBuilder
 
     public virtual ParameterCollection Parameters { get; protected set; }
 
-    protected const string ListSeparator = ",";
+    public const string ListSeparator = ",";
 
     protected const string Space = " ";
   }

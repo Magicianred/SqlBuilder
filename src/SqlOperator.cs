@@ -12,5 +12,6 @@
     LessThanOrEqual,
     IsNot,
     Is,
+    Between,
   }
 }

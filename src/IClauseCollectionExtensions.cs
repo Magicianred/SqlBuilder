@@ -10,12 +10,17 @@ namespace SqlBuilder
       return clauseCollection.And(column, SqlOperator.Equal, value);
     }
 
-    public static IClauseCollection<T> And<T, TProp>(this IClauseCollection<T> clauseCollection,  Expression<Func<T, TProp>> property, TProp value)
+    public static IClauseCollection And(this IClauseCollection clauseCollection, string sql)
+    {
+      return Add(clauseCollection, Clause.SqlAnd, sql);
+    }
+
+    public static IClauseCollection<T> And<T, TProp>(this IClauseCollection<T> clauseCollection, Expression<Func<T, TProp>> property, TProp value)
     {
       return clauseCollection.And(property, SqlOperator.Equal, value);
     }
 
-    public static IClauseCollection<T> And<T, TProp>(this IClauseCollection<T> clauseCollection,  Expression<Func<T, TProp>> property, TProp value, Func<TProp, bool> applyPredicate)
+    public static IClauseCollection<T> And<T, TProp>(this IClauseCollection<T> clauseCollection, Expression<Func<T, TProp>> property, TProp value, Func<TProp, bool> applyPredicate)
     {
       if (applyPredicate(value))
       {
@@ -50,6 +55,11 @@ namespace SqlBuilder
     public static IClauseCollection Or(this IClauseCollection clauseCollection, string column, object value)
     {
       return clauseCollection.Or(column, SqlOperator.Equal, value);
+    }
+
+    public static IClauseCollection Or(this IClauseCollection clauseCollection, string sql)
+    {
+      return Add(clauseCollection, Clause.SqlOr, sql);
     }
 
     public static IClauseCollection<T> Or<T, TProp>(this IClauseCollection<T> clauseCollection, Expression<Func<T, TProp>> property, TProp value)
@@ -110,6 +120,13 @@ namespace SqlBuilder
       {
         clauseCollection.Add(null, clause);
       }
+    }
+
+    private static IClauseCollection Add(this IClauseCollection clauseCollection, string @operator, string sql)
+    {
+      Clause clause = new Clause(sql, clauseCollection.Parameters);
+      clauseCollection.Add(@operator, clause);
+      return clauseCollection;
     }
   }
 }

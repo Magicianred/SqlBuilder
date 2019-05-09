@@ -28,12 +28,24 @@ namespace SqlBuilder
       Schema = "dbo";
       _tableName = type.Name;
 
+      // key column (only the first if there are many)
       Column keyColumn = _columns.FirstOrDefault(x => x.IsKey);
 
-      OrderBy = string.Join(",", _columns.Where(x => !string.IsNullOrEmpty(x.OrderBy)).Select(x => x.OrderBy));
+      // order by 
+      Column[] orderByColumns = _columns.Where(x => !string.IsNullOrEmpty(x.OrderBy)).ToArray();
+      if (orderByColumns.Length > 0)
+      {
+        OrderBy = string.Join(SqlText.ListSeparator, orderByColumns.Select(x => x.OrderBy));
+      }
+      else
+      {
+        OrderBy = null;
+      }
+      
       Key = keyColumn?.Name;
       Options = optionsAttribute != null ? optionsAttribute.Options : SqlOptions.None;
 
+      // pull out the table information if available
       if (tableAttribute != null)
       {
         Schema = tableAttribute.Schema ?? Schema;

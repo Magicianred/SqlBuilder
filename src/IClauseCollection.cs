@@ -16,13 +16,13 @@ namespace SqlBuilder
 
   public interface IClauseCollection : ISqlText
   {
-    IClauseCollection And();
-
     IClauseCollection And(string column, SqlOperator sqlOperator, object value);
 
-    IClauseCollection Or();
-
     IClauseCollection Or(string column, SqlOperator sqlOperator, object value);
+
+    IClauseCollection And();
+
+    IClauseCollection Or();
 
     void Add(string @operator, Clause clause);
 

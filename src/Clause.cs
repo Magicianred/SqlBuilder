@@ -26,34 +26,37 @@ namespace SqlBuilder
 
     public override string Sql()
     {
+      string sql;
+
       if (!string.IsNullOrEmpty(_sql))
       {
-        return _sql;
-      }
-
-      string sql;
-      string sqlOperator = GetSqlOperator(SqlOperator);
-
-      // special clauses
-      if (SqlOperator == SqlOperator.Is || SqlOperator == SqlOperator.IsNot)
-      {
-        // we only support 'is' and 'is not' with null
-        if (Parameters[ParameterName] != null)
-        {
-          throw new InvalidOperationException($"Attempting to use '{SqlOperator}' operator with non-null value.  This operator is only support with null.");
-        }
-
-        sql = string.Concat(Column, Space, sqlOperator, Space, "null");
-      }
-      else if (SqlOperator == SqlOperator.Like)
-      {
-        // special like formatting
-        sql = string.Concat(Column, Space, sqlOperator, Space, ParameterName);
+        sql = _sql;
       }
       else
       {
-        // all other operators
-        sql = string.Concat(Column, sqlOperator, ParameterName);
+        string sqlOperator = GetSqlOperator(SqlOperator);
+
+        // special clauses
+        if (SqlOperator == SqlOperator.Is || SqlOperator == SqlOperator.IsNot)
+        {
+          // we only support 'is' and 'is not' with null
+          if (Parameters[ParameterName] != null)
+          {
+            throw new InvalidOperationException($"Attempting to use '{SqlOperator}' operator with non-null value.  This operator is only support with null.");
+          }
+
+          sql = string.Concat(Column, Space, sqlOperator, Space, "null");
+        }
+        else if (SqlOperator == SqlOperator.Like)
+        {
+          // special like formatting
+          sql = string.Concat(Column, Space, sqlOperator, Space, ParameterName);
+        }
+        else
+        {
+          // all other operators
+          sql = string.Concat(Column, sqlOperator, ParameterName);
+        }
       }
 
       // if no operator simply return the sql
@@ -84,6 +87,7 @@ namespace SqlBuilder
       {
         case SqlOperator.Like:
         case SqlOperator.Is:
+        case SqlOperator.Between:
           {
             return sqlOperator.ToString();
           }

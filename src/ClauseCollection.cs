@@ -31,15 +31,15 @@ namespace SqlBuilder
 
     public new IClauseCollection<T> And()
     {
-      return Add(SqlAnd);
+      return AddCollection(SqlAnd);
     }
 
     public new IClauseCollection<T> Or()
     {
-      return Add(SqlOr);
+      return AddCollection(SqlOr);
     }
 
-    private ClauseCollection<T> Add(string @operator)
+    private ClauseCollection<T> AddCollection(string @operator)
     {
       ClauseCollection<T> clauseCollection = new ClauseCollection<T>(Parameters, @operator);
       Add(clauseCollection);
@@ -63,7 +63,7 @@ namespace SqlBuilder
 
     public IClauseCollection And()
     {
-      return Add(SqlAnd);
+      return AddCollection(SqlAnd);
     }
 
     public IClauseCollection And(string column, SqlOperator sqlOperator, object value)
@@ -74,7 +74,7 @@ namespace SqlBuilder
 
     public IClauseCollection Or()
     {
-      return Add(SqlOr);
+      return AddCollection(SqlOr);
     }
 
     public IClauseCollection Or(string column, SqlOperator sqlOperator, object value)
@@ -126,6 +126,12 @@ namespace SqlBuilder
       Clauses.Add(clause);
     }
 
+    public void Add(string sql)
+    {
+      Clause clause = new Clause(sql, Parameters);
+      Clauses.Add(clause);
+    }
+
     public int Count
     {
       get
@@ -139,7 +145,7 @@ namespace SqlBuilder
       Clauses.Add(clauseCollection);
     }
 
-    private ClauseCollection Add(string @operator)
+    private ClauseCollection AddCollection(string @operator)
     {
       ClauseCollection clauseCollection = new ClauseCollection(Parameters, @operator);
       Add(clauseCollection);
