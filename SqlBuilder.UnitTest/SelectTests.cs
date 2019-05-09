@@ -225,11 +225,53 @@ namespace SqlBuilder.UnitTest
       select.Parameters["@p1"].MustBe("foo");
     }
 
+    [TestMethod]
+    public void supports_join()
+    {
+      Select select = new Select("foo");
+      select
+        .From("dbo.bar b")
+        .Join("left join dbo.fooBar fb on fb.Id = b.id");
+
+      select.Sql().MustBe("select foo from dbo.bar b left join dbo.fooBar fb on fb.Id = b.id");
+    }
+
+    [TestMethod]
+    public void supports_multiple_joins()
+    {
+      Select select = new Select("foo");
+      select
+        .From("dbo.bar b")
+        .Join("left join dbo.fooBar fb on fb.Id = b.id")
+        .Join("left join dbo.foo f on f.Id = fb.id");
+
+      select.Sql().MustBe("select foo from dbo.bar b left join dbo.fooBar fb on fb.Id = b.id left join dbo.foo f on f.Id = fb.id");
+    }
+
+    /// <summary>
+    /// Work in progress
+    /// </summary>
+    [TestMethod]
+    public void strongly_typed_join()
+    {
+      //Select<DataModel> select = new Select<DataModel>();
+      //select.LeftJoin(x => x.Id, x => x.Nested.Id);
+    }
+
     private class DataModel
     {
       public int Id { get; set; }
 
       [OrderBy]
+      public string Title { get; set; }
+
+      public NestedDataModel Nested { get; set; }
+    }
+
+    private class NestedDataModel
+    {
+      public int Id { get; set; }
+
       public string Title { get; set; }
     }
   }

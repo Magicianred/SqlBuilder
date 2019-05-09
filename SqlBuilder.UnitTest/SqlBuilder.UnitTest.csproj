@@ -64,6 +64,7 @@
     <Compile Include="GroupByTests.cs" />
     <Compile Include="IClauseCollectionExtensionsTests.cs" />
     <Compile Include="InsertTests.cs" />
+    <Compile Include="JoinCollectionTests.cs" />
     <Compile Include="KeyTests.cs" />
     <Compile Include="ModelColumnTests.cs" />
     <Compile Include="ModelDefinitionTests.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="SelectTests.cs" />
     <Compile Include="SqlTextTests.cs" />
     <Compile Include="ParameterCollectionTests.cs" />
+    <Compile Include="JoinTests.cs" />
     <Compile Include="UpdateTests.cs" />
     <Compile Include="WhereTests.cs" />
   </ItemGroup>

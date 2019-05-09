@@ -59,6 +59,9 @@
     <Compile Include="Insert.cs" />
     <Compile Include="ISqlText.cs" />
     <Compile Include="IWhere.cs" />
+    <Compile Include="Join.cs" />
+    <Compile Include="JoinCollection.cs" />
+    <Compile Include="JoinType.cs" />
     <Compile Include="Key.cs" />
     <Compile Include="ModelColumn.cs" />
     <Compile Include="ModelDefinition.cs" />

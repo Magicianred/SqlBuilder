@@ -41,6 +41,30 @@ namespace SqlBuilder.UnitTest
       select.Where().Sql().MustBe("where (Id=@p0 And foo<@p1)");
     }
 
+    [TestMethod]
+    public void LeftJoin_adds_join()
+    {
+      Select<TestClass> select = new Select<TestClass>();
+      SelectExtensions.LeftJoin(select, "foo", "1=1");
+      select.Join().Sql().MustBe("left join foo on 1=1");
+    }
+
+    [TestMethod]
+    public void RightJoin_adds_join()
+    {
+      Select<TestClass> select = new Select<TestClass>();
+      SelectExtensions.RightJoin(select, "foo", "1=1");
+      select.Join().Sql().MustBe("right join foo on 1=1");
+    }
+
+    [TestMethod]
+    public void Join_adds_join()
+    {
+      Select<TestClass> select = new Select<TestClass>();
+      SelectExtensions.Join(select, JoinType.Left, "foo", "1=1");
+      select.Join().Sql().MustBe("left join foo on 1=1");
+    }
+
     private class TestClass
     {
       public int Id { get; set; }

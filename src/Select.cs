@@ -161,6 +161,23 @@ namespace SqlBuilder
       return _from;
     }
 
+    public JoinCollection Join()
+    {
+      return _joins;
+    }
+
+    public Select Join(string sql)
+    {
+      if (_joins == null)
+      {
+        _joins = new JoinCollection();
+      }
+
+      _joins.Add(sql);
+
+      return this;
+    }
+
     public Select OrderBy(string column, bool ascending = true)
     {
       string sql = ascending ? column : string.Concat(column, " desc");
@@ -278,11 +295,13 @@ namespace SqlBuilder
       SqlOptions sqlOptions = Options();
       Options options = new Options(sqlOptions);
 
+      // options
       if (sqlOptions.HasFlag(SqlOptions.SetArithabort))
       {
         builder.AppendLine($"set arithabort on");
       }
 
+      // select from
       if (paging != null && paging.IsTop)
       {
         builder.Append($"select top {paging.PageSize} {columns} from {from}");
@@ -292,30 +311,40 @@ namespace SqlBuilder
         builder.Append($"select {columns} from {from}");
       }
 
+      // joins
+      if (_joins != null)
+      {
+        _joins.Sql(builder);
+      }
+
+      // where
       if (where != null)
       {
         where.Sql(builder);
       }
 
+      // group by
       if (groupBy != null)
       {
         groupBy.Sql(builder);
       }
 
+      // order by
       if (orderBy != null)
       {
         orderBy.Sql(builder);
       }
 
+      // pagination
       if (paging != null && !paging.IsTop)
       {
         paging.Sql(builder);
       }
 
       // query options
-
       options.Sql(builder);
 
+      // count recordset
       if (IncludeCount())
       {
         builder.Append($";select count(*) from {from}");
@@ -345,6 +374,8 @@ namespace SqlBuilder
     private OrderBy _orderBy;
 
     private GroupBy _groupBy;
+
+    private JoinCollection _joins;
 
     private bool _includeCount;
 
