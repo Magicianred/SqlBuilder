@@ -8,7 +8,7 @@ namespace SqlBuilder
   public class Select<TDataModel> : Select
   {
     public Select(string columns = Wildcard, bool includeCount = false, string alias = null)
-      : this(ModelDefinition.GetDefinition<TDataModel>(), columns, includeCount) { }
+      : this(ModelDefinition.GetDefinition<TDataModel>(), columns, includeCount, alias) { }
 
     public Select(ModelDefinition definition, string columns = Wildcard, bool includeCount = false, string alias = null)
       : base(columns, includeCount)

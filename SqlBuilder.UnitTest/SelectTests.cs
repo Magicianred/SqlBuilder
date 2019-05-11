@@ -248,16 +248,6 @@ namespace SqlBuilder.UnitTest
       select.Sql().MustBe("select foo from dbo.bar b left join dbo.fooBar fb on fb.Id = b.id left join dbo.foo f on f.Id = fb.id");
     }
 
-    /// <summary>
-    /// Work in progress
-    /// </summary>
-    [TestMethod]
-    public void strongly_typed_join()
-    {
-      //Select<DataModel> select = new Select<DataModel>();
-      //select.LeftJoin(x => x.Id, x => x.Nested.Id);
-    }
-
     [TestMethod]
     public void complex_select_with_joins_and_adhoc_where_clauses()
     {
@@ -284,30 +274,38 @@ namespace SqlBuilder.UnitTest
       Select<VProperty> select = new Select<VProperty>();
       select
         .Column(x => x.Title)
-        .Where("RP.PropertyId != P.PropertyId")
-        .And("RP.PostCodeFirstPart = PA.PostCodeFirstPart");
+        .Where("PropertyId != PropertyId")
+        .And("PostCodeFirstPart = PostCodeFirstPart");
 
-      select.Sql().MustBe("select Title from dbo.VProperty where (RP.PropertyId != P.PropertyId And RP.PostCodeFirstPart = PA.PostCodeFirstPart)");
+      select.Sql().MustBe("select Title from dbo.VProperty where (PropertyId != PropertyId And PostCodeFirstPart = PostCodeFirstPart)");
+    }
+
+    [TestMethod]
+    public void simplified_select_with_parameter()
+    {
+      Select<VProperty> select = new Select<VProperty>();
+      select
+        .Column(x => x.Title)
+        .Where("PropertyId != PropertyId")
+        .And("PostCodeFirstPart = PostCodeFirstPart")
+        .And("PropertyId", 1);
+
+      string sql = select.Sql();
     }
 
     [TestMethod]
     public void creating_instance_with_modeldefinition_and_emptyorderby_does_not_add_empty_orderby()
     {
-      ModelDefinition modelDefinition = new ModelDefinition(typeof(VProperty));
-
-      Select<VProperty> select = new Select<VProperty>(modelDefinition);
-
-      select.OrderBy().MustBeNull();
+      new Select<VProperty>(new ModelDefinition(typeof(VProperty))).OrderBy().MustBeNull();
     }
 
     [TestMethod]
     public void uses_alias()
     {
-      ModelDefinition modelDefinition = new ModelDefinition(typeof(VProperty));
+      new Select<VProperty>(new ModelDefinition(typeof(VProperty)), alias: "RP").Sql().MustBe("select RP.Title,RP.Latitude,RP.Longitude from dbo.VProperty RP");
 
-      Select<VProperty> select = new Select<VProperty>(modelDefinition, alias: "RP");
-
-      select.Sql().MustBe("select RP.Title,RP.Latitude,RP.Longitude from dbo.VProperty RP");
+      // fixes bug where I wasn't passing down the arg to the overloaded ctor (!)
+      new Select<VProperty>(alias: "RP").Sql().MustBe("select RP.Title,RP.Latitude,RP.Longitude from dbo.VProperty RP");
     }
 
     private class VProperty
@@ -325,9 +323,6 @@ namespace SqlBuilder.UnitTest
 
       [OrderBy]
       public string Title { get; set; }
-
-      //WIP
-      //private NestedDataModel Nested { get; set; }
     }
 
     private class NestedDataModel
