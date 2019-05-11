@@ -7,13 +7,14 @@ namespace SqlBuilder
 {
   public class Select<TDataModel> : Select
   {
-    public Select(string columns = Wildcard, bool includeCount = false)
-        : this(ModelDefinition.GetDefinition<TDataModel>(), columns, includeCount) { }
+    public Select(string columns = Wildcard, bool includeCount = false, string alias = null)
+      : this(ModelDefinition.GetDefinition<TDataModel>(), columns, includeCount) { }
 
-    public Select(ModelDefinition definition, string columns = Wildcard, bool includeCount = false)
-        : base(columns, includeCount)
+    public Select(ModelDefinition definition, string columns = Wildcard, bool includeCount = false, string alias = null)
+      : base(columns, includeCount)
     {
       _definition = definition;
+      _alias = alias;
 
       if (!string.IsNullOrEmpty(_definition.OrderBy))
       {
@@ -95,7 +96,11 @@ namespace SqlBuilder
         return _columns;
       }
 
-      string columns = string.Join(ListSeparator, _definition.GetDatabaseColumns().Select(x => x.Name));
+      // if we have an alias, provide it as part of the name
+      bool hasAlias = !string.IsNullOrEmpty(_alias);
+
+      // column list
+      string columns = string.Join(ListSeparator, _definition.GetDatabaseColumns().Select(x => hasAlias ? string.Concat(_alias, Dot, x.Name) : x.Name));
 
       if (!string.IsNullOrEmpty(columns))
       {
@@ -118,7 +123,14 @@ namespace SqlBuilder
 
     public override string From()
     {
-      return _definition.GetTableName();
+      string tableName = _definition.GetTableName();
+
+      if (string.IsNullOrEmpty(_alias))
+      {
+        return tableName;
+      }
+
+      return string.Concat(tableName, Space, _alias);
     }
 
     public override SqlOptions Options()
@@ -138,6 +150,8 @@ namespace SqlBuilder
     private Where<TDataModel> _where;
 
     private OrderBy _orderBy;
+
+    private readonly string _alias;
   }
 
   public class Select : SqlText

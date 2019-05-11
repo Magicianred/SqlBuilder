@@ -31,5 +31,7 @@ namespace SqlBuilder
     public const string ListSeparator = ",";
 
     protected const string Space = " ";
+
+    protected const string Dot = ".";
   }
 }

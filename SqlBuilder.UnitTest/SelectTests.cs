@@ -296,6 +296,18 @@ namespace SqlBuilder.UnitTest
       ModelDefinition modelDefinition = new ModelDefinition(typeof(VProperty));
 
       Select<VProperty> select = new Select<VProperty>(modelDefinition);
+
+      select.OrderBy().MustBeNull();
+    }
+
+    [TestMethod]
+    public void uses_alias()
+    {
+      ModelDefinition modelDefinition = new ModelDefinition(typeof(VProperty));
+
+      Select<VProperty> select = new Select<VProperty>(modelDefinition, alias: "RP");
+
+      select.Sql().MustBe("select RP.Title,RP.Latitude,RP.Longitude from dbo.VProperty RP");
     }
 
     private class VProperty
