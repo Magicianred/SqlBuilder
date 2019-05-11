@@ -26,6 +26,12 @@ namespace SqlBuilder
     {
       string name = property.MemberName();
 
+      // add alias?
+      if (!string.IsNullOrEmpty(_alias))
+      {
+        name = string.Concat(_alias, Dot, name);
+      }
+
       // if we don't have columns set or it's the default (*) then overwrite with single column
       if (string.IsNullOrEmpty(_columns) || _columns == Wildcard)
       {

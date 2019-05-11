@@ -308,6 +308,16 @@ namespace SqlBuilder.UnitTest
       new Select<VProperty>(alias: "RP").Sql().MustBe("select RP.Title,RP.Latitude,RP.Longitude from dbo.VProperty RP");
     }
 
+    [TestMethod]
+    public void set_column_uses_alias()
+    {
+      Select<VProperty> select = new Select<VProperty>(alias: "RP");
+
+      select.Column(x => x.Title);
+
+      select.Sql().MustBe("select RP.Title from dbo.VProperty RP");
+    }
+
     private class VProperty
     {
       public string Title { get; set; }
