@@ -14,10 +14,10 @@ build:
   verbosity: minimal
 deploy:
   release: SqlBuilder-v$(appveyor_build_version)
-  description: 'SqlBuilder'
+  description: 'SqlBuilder $(appveyor_build_version)'
   provider: GitHub
   auth_token:
-    secure: %GITHUB_AUTHTOKEN% # your encrypted token from GitHub
+    secure: '%GITHUB_AUTHTOKEN%' # your encrypted token from GitHub
   artifact: /.*\.nupkg/            # upload all NuGet packages to release assets
   draft: false
   prerelease: false
