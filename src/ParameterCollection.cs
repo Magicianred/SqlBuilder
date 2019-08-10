@@ -30,9 +30,9 @@ namespace SqlBuilder
 
     public string Add(string name, object value)
     {
-      string parameter = GetName(name);
-      _parameters.Add(parameter, value);
-      return parameter;
+      name = GetName(name);
+      _parameters.Add(name, value);
+      return name;
     }
 
     public void AddRange(Dictionary<string, object> parameters)

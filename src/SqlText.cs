@@ -26,6 +26,12 @@ namespace SqlBuilder
       }
     }
 
+    public ParameterCollection AddParameter(string name, object value)
+    {
+      Parameters.Add(name, value);
+      return Parameters;
+    }
+
     public virtual ParameterCollection Parameters { get; protected set; }
 
     public const string ListSeparator = ",";

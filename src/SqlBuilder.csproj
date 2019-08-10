@@ -57,6 +57,7 @@
     <Compile Include="IClauseCollectionExtensions.cs" />
     <Compile Include="IModelFactory.cs" />
     <Compile Include="Insert.cs" />
+    <Compile Include="InsertOrUpdate.cs" />
     <Compile Include="ISqlText.cs" />
     <Compile Include="IWhere.cs" />
     <Compile Include="Join.cs" />
