@@ -12,15 +12,3 @@ build:
   publish_nuget: true
   include_nuget_references: true
   verbosity: minimal
-deploy:
-  release: SqlBuilder-v$(appveyor_build_version)
-  description: 'SqlBuilder v$(appveyor_build_version)'
-  provider: GitHub
-  auth_token:
-    secure: '%GITHUB_AUTHTOKEN%'
-  artifact: /.*\.nupkg/
-  draft: false
-  prerelease: false
-  on:
-    branch: master
-    APPVEYOR_REPO_TAG: true
