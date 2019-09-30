@@ -265,7 +265,7 @@ namespace SqlBuilder.UnitTest
         .And("RP.Cost between ROUND(P.Cost - ((P.Cost/100) * 5), -5) AND ROUND(P.Cost + ((P.Cost/100) * 5), +5)")
         .And("RP.[Status] != 4");
 
-      string sql = select.Sql();
+      select.Sql().MustBe("select Title,Latitude,Longitude from dbo.VProperty left join dbo.TProperty P on P.PropertyId = @propertyId left join dbo.TAddress PA on PA.AddressId = P.AddressId where (RP.PropertyId != P.PropertyId And RP.PostCodeFirstPart = PA.PostCodeFirstPart And RP.BedroomCount = P.BedroomCount And RP.Cost between ROUND(P.Cost - ((P.Cost/100) * 5), -5) AND ROUND(P.Cost + ((P.Cost/100) * 5), +5) And RP.[Status] != 4) order by RP.Cost");
     }
 
     [TestMethod]
