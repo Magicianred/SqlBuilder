@@ -50,8 +50,7 @@ namespace SqlBuilder
       OrderBy = order;
 
       Type returnType = member.ReturnType();
-      Type nullableType;
-      IsNullable = returnType.IsNullable(out nullableType);
+      IsNullable = returnType.IsNullable(out Type nullableType);
       Type = IsNullable ? nullableType.Name : returnType.Name;
     }
 

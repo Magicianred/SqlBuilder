@@ -69,6 +69,7 @@
     <Compile Include="ModelColumnTests.cs" />
     <Compile Include="ModelDefinitionTests.cs" />
     <Compile Include="ModelFactoryTests.cs" />
+    <Compile Include="MultiSelectTests.cs" />
     <Compile Include="OptionsTests.cs" />
     <Compile Include="OrderByTests.cs" />
     <Compile Include="PagingTests.cs" />

@@ -67,6 +67,7 @@
     <Compile Include="ModelColumn.cs" />
     <Compile Include="ModelDefinition.cs" />
     <Compile Include="ModelFactory.cs" />
+    <Compile Include="MultiSelect.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="OrderBy.cs" />
     <Compile Include="Paging.cs" />
