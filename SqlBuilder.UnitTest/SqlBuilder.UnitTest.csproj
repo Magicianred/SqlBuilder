@@ -56,6 +56,7 @@
     <Compile Include="AssertExtensions.cs" />
     <Compile Include="ClauseCollectionTests.cs" />
     <Compile Include="ClauseTests.cs" />
+    <Compile Include="ColumnTests.cs" />
     <Compile Include="DeleteTests.cs" />
     <Compile Include="Extensions\ExpressionExtensionsTests.cs" />
     <Compile Include="Extensions\ReflectionExtensionsTests.cs" />

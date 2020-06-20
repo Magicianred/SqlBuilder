@@ -12,41 +12,24 @@ namespace SqlBuilder
     public Column(MemberInfo member)
     {
       KeyAttribute key = member.GetCustomAttribute<KeyAttribute>();
-      ReadOnlyAttribute readOnly = member.GetCustomAttribute<ReadOnlyAttribute>();
       ColumnAttribute column = member.GetCustomAttribute<ColumnAttribute>();
       OrderByAttribute orderBy = member.GetCustomAttribute<OrderByAttribute>();
       DescriptionAttribute description = member.GetCustomAttribute<DescriptionAttribute>();
 
       string name = column != null ? column.Name : member.Name;
       bool isKey = key != null;
-      bool isReadOnly = readOnly != null && readOnly.IsReadOnly;
       string order = null;
 
       if (orderBy != null)
       {
-        if (orderBy.Ascending)
-        {
-          order = name;
-        }
-        else
-        {
-          order = string.Concat(name, " desc");
-        }
+        order = orderBy.Ascending ? name : string.Concat(name, " desc");
       }
 
-      if (description != null)
-      {
-        Title = description.Description;
-      }
-      else
-      {
-        Title = name;
-      }
-
+      Title = description != null ? description.Description : name;
       Member = member;
       Name = name;
       IsKey = isKey;
-      IsReadOnly = isReadOnly;
+      IsReadOnly = !IsMutable(member);
       OrderBy = order;
 
       Type returnType = member.ReturnType();
@@ -88,6 +71,45 @@ namespace SqlBuilder
     public readonly string Type;
 
     public readonly bool IsNullable;
+
+    /// <summary>
+    /// Returns whether the <paramref name="member"/> can be updated.
+    /// </summary>
+    /// <param name="member"></param>
+    /// <returns></returns>
+    private static bool IsMutable(MemberInfo member)
+    {
+      ReadOnlyAttribute readOnly = member.GetCustomAttribute<ReadOnlyAttribute>();
+
+      // if there is an attribute respect the value
+      if (readOnly?.IsReadOnly == true)
+      {
+        return false;
+      }
+
+      // otherwise, check the member type - if field or property, check readonly/private setter.
+      switch (member.MemberType)
+      {
+        case MemberTypes.Field:
+          {
+            return !((FieldInfo)member).IsInitOnly;
+          }
+        case MemberTypes.Property:
+          {
+            PropertyInfo property = (PropertyInfo)member;
+
+            if (!property.CanWrite)
+            {
+              return false;
+            }
+
+            return property.SetMethod.IsPublic;
+          }
+      }
+
+      // default
+      return true;
+    }
 
     /// <summary>
     /// This needs to be internal so it doesn't get serialised back to the ui

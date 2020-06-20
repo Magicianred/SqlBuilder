@@ -318,6 +318,17 @@ namespace SqlBuilder.UnitTest
       select.Sql().MustBe("select RP.Title from dbo.VProperty RP");
     }
 
+    /// <summary>
+    /// Make sure we don't include properties without public setters and readonly fields.
+    /// </summary>
+    [TestMethod]
+    public void ignores_readonly_members()
+    {
+      Select<VProperty> select = new Select<VProperty>();
+
+      select.Sql().MustBe("select Title,Latitude,Longitude from dbo.VProperty");
+    }
+
     private class VProperty
     {
       public string Title { get; set; }
@@ -325,6 +336,10 @@ namespace SqlBuilder.UnitTest
       public double? Latitude { get; set; }
 
       public double? Longitude { get; set; }
+
+      public bool IsReadOnlyProp { get; private set; }
+
+      public readonly bool IsReadOnlyField = true;
     }
 
     private class DataModel
