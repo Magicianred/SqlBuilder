@@ -79,6 +79,11 @@ namespace SqlBuilder
       return GetDatabaseColumns().Where(x => x.IsEditable);
     }
 
+    public IEnumerable<Column> GetMutableColumns()
+    {
+      return GetDatabaseColumns().Where(x => !x.IsReadOnly);
+    }
+
     public readonly string OrderBy;
 
     public readonly string Key;

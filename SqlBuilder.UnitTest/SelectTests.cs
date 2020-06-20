@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SqlBuilder.Attributes;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SqlBuilder.UnitTest
 {
@@ -302,10 +303,10 @@ namespace SqlBuilder.UnitTest
     [TestMethod]
     public void uses_alias()
     {
-      new Select<VProperty>(new ModelDefinition(typeof(VProperty)), alias: "RP").Sql().MustBe("select RP.Title,RP.Latitude,RP.Longitude from dbo.VProperty RP");
+      new Select<VProperty>(new ModelDefinition(typeof(VProperty)), alias: "RP").Sql().MustBe("select RP.Key,RP.Title,RP.Latitude,RP.Longitude from dbo.VProperty RP");
 
       // fixes bug where I wasn't passing down the arg to the overloaded ctor (!)
-      new Select<VProperty>(alias: "RP").Sql().MustBe("select RP.Title,RP.Latitude,RP.Longitude from dbo.VProperty RP");
+      new Select<VProperty>(alias: "RP").Sql().MustBe("select RP.Key,RP.Title,RP.Latitude,RP.Longitude from dbo.VProperty RP");
     }
 
     [TestMethod]
@@ -326,11 +327,14 @@ namespace SqlBuilder.UnitTest
     {
       Select<VProperty> select = new Select<VProperty>();
 
-      select.Sql().MustBe("select Title,Latitude,Longitude from dbo.VProperty");
+      select.Sql().MustBe("select Key,Title,Latitude,Longitude from dbo.VProperty");
     }
 
     private class VProperty
     {
+      [Key]
+      public int Key { get; set; }
+
       public string Title { get; set; }
 
       public double? Latitude { get; set; }

@@ -108,7 +108,7 @@ namespace SqlBuilder
       bool hasAlias = !string.IsNullOrEmpty(_alias);
 
       // column list
-      string columns = string.Join(ListSeparator, _definition.GetEditableColumns().Select(x => hasAlias ? string.Concat(_alias, Dot, x.Name) : x.Name));
+      string columns = string.Join(ListSeparator, _definition.GetMutableColumns().Select(x => hasAlias ? string.Concat(_alias, Dot, x.Name) : x.Name));
 
       if (!string.IsNullOrEmpty(columns))
       {

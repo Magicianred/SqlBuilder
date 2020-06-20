@@ -110,6 +110,10 @@ namespace SqlBuilder
 
     protected ModelFactory() { }
 
+    /// <summary>
+    /// Looks for and registers types of <see cref="DataModel"/> to cache and optimise working with these types.
+    /// </summary>
+    /// <param name="assemblies"></param>
     public static void RegisterTypes(params Assembly[] assemblies)
     {
       foreach (Assembly assembly in assemblies)
@@ -121,12 +125,20 @@ namespace SqlBuilder
       }
     }
 
+    /// <summary>
+    /// Registers type of <see cref="DataModel"/> to cache and optimise working with these types.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public static void RegisterType<T>()
       where T : DataModel
     {
       RegisterType(typeof(T));
     }
 
+    /// <summary>
+    /// Registers type of <see cref="DataModel"/> to cache and optimise working with these types.
+    /// </summary>
+    /// <param name="dataModelType"></param>
     public static void RegisterType(Type dataModelType)
     {
       if (!dataModelType.Inherits(typeof(DataModel)))
@@ -169,6 +181,9 @@ namespace SqlBuilder
       Cache.TryAdd(key, columns);
     }
 
+    /// <summary>
+    /// Clears the registrations in the cache.
+    /// </summary>
     public static void Clear()
     {
       Cache.Clear();
