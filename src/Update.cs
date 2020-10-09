@@ -10,7 +10,7 @@ namespace SqlBuilder
     public Update(object key, TDataModel dataModel)
       : base()
     {
-      CheckDefinition();
+      EnsureDefinition();
 
       Parameters.Add(Definition.Key, key);
 
@@ -18,7 +18,7 @@ namespace SqlBuilder
       {
         object value = column.GetMember().GetMemberValue(dataModel);
         string name = Parameters.Add(column.Name, value);
-        _sets.Add(column.Name, name);
+        _setParameters.Add(column.Name, name);
       }
     }
 
@@ -31,7 +31,7 @@ namespace SqlBuilder
     public Update(object key, TDataModel current, TDataModel next)
       : base()
     {
-      CheckDefinition();
+      EnsureDefinition();
 
       // for each column check the current value against the next to see if there has been a change
       foreach (Column column in Definition.GetEditableColumns())
@@ -42,7 +42,7 @@ namespace SqlBuilder
         if (currentValue != nextValue)
         {
           string name = Parameters.Add(column.Name, nextValue);
-          _sets.Add(column.Name, name);
+          _setParameters.Add(column.Name, name);
         }
       }
 
@@ -55,23 +55,23 @@ namespace SqlBuilder
 
     public override string Sql()
     {
-      if (!_sets.Any())
+      if (!_setParameters.Any())
       {
         return null;
       }
 
-      string set = string.Join(ListSeparator, _sets.Select(x => string.Concat(x.Key, "=", x.Value)));
+      string set = string.Join(ListSeparator, _setParameters.Select(x => $"{x.Key}={x.Value}"));
       return $"update {Table()} set {set} where {Definition.Key}={ParameterCollection.GetName(Definition.Key)}";
     }
-    
-    private void CheckDefinition()
+
+    private void EnsureDefinition()
     {
-      if(string.IsNullOrEmpty(Definition.Key))
+      if (string.IsNullOrEmpty(Definition.Key))
       {
         throw new InvalidOperationException($"The data model type {typeof(TDataModel)} does not have a key specified. Update requires a known key.");
       }
     }
 
-    private IDictionary<string, string> _sets = new Dictionary<string, string>(0); // init here so we don't have to in ctor
+    private IDictionary<string, string> _setParameters = new Dictionary<string, string>(0); // init here so we don't have to in ctor
   }
 }
