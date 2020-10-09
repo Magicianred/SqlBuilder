@@ -83,5 +83,29 @@
           }
       }
     }
+
+    /// <summary>
+    /// Attempts to get the property value of the attribute.
+    /// </summary>
+    /// <typeparam name="TAttribute"></typeparam>
+    /// <typeparam name="TProp"></typeparam>
+    /// <param name="member"></param>
+    /// <param name="expression"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static bool TryGetCustomAttributeValue<TAttribute, TProp>(this MemberInfo member, Func<TAttribute, TProp> expression, out TProp value)
+      where TAttribute : Attribute
+    {
+      TAttribute attribute = member.GetCustomAttribute<TAttribute>();
+
+      if (attribute != null)
+      {
+        value = expression(attribute);
+        return true;
+      }
+
+      value = default(TProp);
+      return false;
+    }
   }
 }

@@ -91,6 +91,14 @@ namespace SqlBuilder.UnitTest.Extensions
       action.MustNotThrow();
     }
 
+    [TestMethod]
+    public void TryGetCustomAttributeValue_finds_value()
+    {
+      typeof(TestClass).GetMember(nameof(TestClass.Foo), BindingFlags.Instance | BindingFlags.Public).First().TryGetCustomAttributeValue<RequiredAttribute, string>(x => x.ErrorMessage, out string errorMessage).MustBeTrue();
+
+      errorMessage.MustBe("FooBar");
+    }
+
     private class TestClass
     {
       [Required(ErrorMessage = "FooBar")]
