@@ -11,27 +11,19 @@ namespace SqlBuilder
   {
     public Column(MemberInfo member)
     {
-      KeyAttribute key = member.GetCustomAttribute<KeyAttribute>();
-      ColumnAttribute column = member.GetCustomAttribute<ColumnAttribute>();
-      OrderByAttribute orderBy = member.GetCustomAttribute<OrderByAttribute>();
-      DescriptionAttribute description = member.GetCustomAttribute<DescriptionAttribute>();
+      string name = member.TryGetCustomAttributeValue<ColumnAttribute, string>(attribute => attribute.Name, out string columnName) ? columnName : member.Name; 
+      bool isKey = member.GetCustomAttribute<KeyAttribute>() != null;
 
-      string name = column != null ? column.Name : member.Name;
-      bool isKey = key != null;
-      string order = null;
-
-      if (orderBy != null)
+      if(member.TryGetCustomAttributeValue<OrderByAttribute, bool>(attribute => attribute.Ascending, out bool isAscending))
       {
-        order = orderBy.Ascending ? name : string.Concat(name, " desc");
+        OrderBy = isAscending ? name : $"{name} desc";
       }
 
-      Title = description != null ? description.Description : name;
+      Title = member.TryGetCustomAttributeValue<DescriptionAttribute, string>(attribute => attribute.Description, out string description) ? description : name;
       Member = member;
       Name = name;
       IsKey = isKey;
-      IsReadOnly = !IsMutable(member);
-      OrderBy = order;
-
+      IsReadOnly = !CanWrite(member);
       Type returnType = member.ReturnType();
       IsNullable = returnType.IsNullable(out Type nullableType);
       Type = IsNullable ? nullableType.Name : returnType.Name;
@@ -77,7 +69,7 @@ namespace SqlBuilder
     /// </summary>
     /// <param name="member"></param>
     /// <returns></returns>
-    private static bool IsMutable(MemberInfo member)
+    private static bool CanWrite(MemberInfo member)
     {
       ReadOnlyAttribute readOnly = member.GetCustomAttribute<ReadOnlyAttribute>();
 
